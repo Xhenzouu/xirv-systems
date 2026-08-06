@@ -1,0 +1,24 @@
+.xirv-panel {
+
+  background: var(--surface);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: var(--radius-lg);
+
+  padding: var(--space-lg);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+
+.xirv-panel h2 {
+
+  margin-top: 0;
+
+  margin-bottom: var(--space-md);
+
+  font-size: 18px;
+
+  color: var(--text-primary);
+}

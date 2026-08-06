@@ -1,0 +1,49 @@
+.xirv-card {
+
+  background: var(--surface);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: var(--radius-lg);
+
+  padding: var(--space-lg);
+
+}
+
+
+.card-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: var(--space-md);
+
+}
+
+
+.card-header h3 {
+
+  margin: 0;
+
+  font-size: var(--text-lg);
+
+}
+
+
+.card-status {
+
+  font-size: var(--text-sm);
+
+  color: var(--text-secondary);
+
+}
+
+
+.card-content {
+
+  color: var(--text-primary);
+
+}

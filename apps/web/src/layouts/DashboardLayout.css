@@ -1,0 +1,15 @@
+.dashboard-layout {
+  min-height: 100vh;
+}
+
+.dashboard-body {
+  display: flex;
+}
+
+.dashboard-content {
+  flex: 1;
+
+  padding: var(--space-xl);
+
+  background: var(--background-primary);
+}

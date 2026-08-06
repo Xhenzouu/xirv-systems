@@ -1,0 +1,49 @@
+.dashboard-hero {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: var(--space-xl);
+
+  padding: var(--space-xl);
+
+  border-radius: var(--radius-lg);
+
+  background: linear-gradient(
+    135deg,
+    var(--xirv-primary),
+    var(--xirv-accent)
+  );
+
+  color: white;
+
+}
+
+.dashboard-hero h1 {
+
+  margin: 0 0 var(--space-sm);
+
+  color: white;
+
+}
+
+.dashboard-hero p {
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.9);
+
+}
+
+.dashboard-hero > div {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--space-sm);
+
+}

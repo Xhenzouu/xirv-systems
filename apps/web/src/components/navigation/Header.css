@@ -1,0 +1,21 @@
+.xirv-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: var(--space-md) var(--space-xl);
+
+  background: var(--xirv-primary);
+}
+
+.xirv-header a {
+  color: white;
+  text-decoration: none;
+}
+
+.xirv-header nav {
+  display: flex;
+  gap: var(--space-md);
+}

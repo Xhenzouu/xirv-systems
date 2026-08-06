@@ -1,0 +1,47 @@
+.xirv-input {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--space-sm);
+
+}
+
+.xirv-input label {
+
+  font-weight: 600;
+
+  color: var(--text-primary);
+
+}
+
+.xirv-input input {
+
+  padding: var(--space-md);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: var(--radius-md);
+
+  background: var(--surface);
+
+  color: var(--text-primary);
+
+  font-size: 1rem;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+
+}
+
+.xirv-input input:focus {
+
+  outline: none;
+
+  border-color: var(--xirv-primary);
+
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+
+}

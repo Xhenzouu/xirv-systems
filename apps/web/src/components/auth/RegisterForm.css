@@ -1,0 +1,29 @@
+.register-form {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--space-lg);
+
+}
+
+.register-links {
+
+  text-align: center;
+
+}
+
+.register-links a {
+
+  color: var(--xirv-primary);
+
+  text-decoration: none;
+
+}
+
+.register-links a:hover {
+
+  text-decoration: underline;
+
+}

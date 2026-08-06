@@ -1,0 +1,17 @@
+.xirv-button {
+  padding: var(--space-sm) var(--space-lg);
+
+  border: none;
+  border-radius: var(--radius-md);
+
+  background: var(--xirv-primary);
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.xirv-button:hover {
+  opacity: 0.9;
+}

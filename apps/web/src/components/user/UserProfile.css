@@ -1,0 +1,19 @@
+.user-profile {
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+}
+
+.user-profile div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.user-profile small {
+  font-size: 12px;
+
+  opacity: 0.7;
+}

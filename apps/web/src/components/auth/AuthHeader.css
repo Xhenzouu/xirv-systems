@@ -1,0 +1,17 @@
+.auth-header {
+
+  margin-bottom: var(--space-xl);
+
+}
+
+.auth-header h1 {
+
+  margin-bottom: var(--space-sm);
+
+}
+
+.auth-header p {
+
+  color: var(--text-secondary);
+
+}

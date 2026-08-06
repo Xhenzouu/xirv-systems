@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Package managers
+package-lock.json
+yarn.lock
+
 # Build outputs
 dist/
 build/
@@ -8,17 +12,18 @@ coverage/
 
 # Environment
 .env
-.env.local
-.env.development
-.env.production
+.env.*
+!.env.example
 
 # Logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
+vitest-output.txt
 
 # IDE
-.vscode/settings.json
+.vscode/
+!.vscode/extensions.json
 
 # OS
 .DS_Store
@@ -27,10 +32,10 @@ Thumbs.db
 # Turborepo
 .turbo/
 
-# Prisma
-prisma/dev.db
-
 # Python
 __pycache__/
 *.pyc
 .venv/
+
+# Prisma
+prisma/dev.db

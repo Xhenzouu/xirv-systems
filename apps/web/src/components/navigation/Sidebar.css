@@ -1,0 +1,44 @@
+.xirv-sidebar {
+  width: 240px;
+
+  min-height: calc(100vh - 64px);
+
+  padding: var(--space-lg);
+
+  background: #111827;
+}
+
+.xirv-sidebar nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-md);
+}
+
+.xirv-sidebar a {
+  color: #CBD5E1;
+
+  text-decoration: none;
+
+  padding: var(--space-sm);
+
+  border-radius: var(--radius-md);
+
+  transition: all 0.2s ease;
+}
+
+.xirv-sidebar a:hover {
+
+  background: rgba(0, 229, 255, 0.10);
+
+  color: white;
+}
+
+.xirv-sidebar a.active {
+
+  background: rgba(0, 229, 255, 0.15);
+
+  color: var(--xirv-accent);
+
+  border-left: 3px solid var(--xirv-accent);
+}

@@ -1,0 +1,24 @@
+.xirv-shell {
+
+  min-height: 100vh;
+
+  background:
+    var(--background-primary);
+
+}
+
+
+.xirv-shell-body {
+
+  display: flex;
+
+}
+
+
+.xirv-content {
+
+  flex: 1;
+
+  padding: var(--space-xl);
+
+}
