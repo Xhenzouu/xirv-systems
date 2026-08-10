@@ -28,7 +28,8 @@ export async function getUserById(
 
 export async function updateProfile(
   id: string,
-  fullName: string,
+  firstName: string,
+  lastName: string,
   email: string,
 ) {
   const user = await getUserById(id)
@@ -47,7 +48,8 @@ export async function updateProfile(
 
   return updateUser(
     id,
-    fullName,
+    firstName,
+    lastName,
     email,
   )
 }

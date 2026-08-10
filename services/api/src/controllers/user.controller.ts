@@ -37,7 +37,8 @@ export async function profile(
       res,
       {
         id: user.id,
-        fullName: user.fullName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role,
       },
@@ -73,14 +74,16 @@ export async function update(
     requireUser(req)
 
   const {
-    fullName,
+    firstName,
+    lastName,
     email,
   } = req.body
 
   const updated =
     await updateProfile(
       user.id,
-      fullName,
+      firstName,
+      lastName,
       email,
     )
 
@@ -88,7 +91,8 @@ export async function update(
     res,
     {
       id: updated.id,
-      fullName: updated.fullName,
+      firstName: updated.firstName,
+      lastName: updated.lastName,
       email: updated.email,
       role: updated.role,
     },

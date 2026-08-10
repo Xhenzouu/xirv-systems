@@ -1,4 +1,18 @@
-import "dotenv/config"
+import dotenv from "dotenv"
+import path from "path"
+import { fileURLToPath } from "url"
+
+// Load the correct env file based on NODE_ENV
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const envFile = process.env.NODE_ENV === "production" 
+  ? ".env.production" 
+  : ".env"
+
+dotenv.config({
+  path: path.resolve(__dirname, "..", envFile),
+})
 
 import { validateEnv } from "./config/validate-env.js"
 

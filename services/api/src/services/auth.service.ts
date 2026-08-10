@@ -18,7 +18,8 @@ import {
 } from "../repositories/user.repository.js"
 
 export async function registerUser(
-  fullName: string,
+  firstName: string,
+  lastName: string,
   email: string,
   password: string,
 ) {
@@ -37,7 +38,8 @@ export async function registerUser(
   )
 
   return createUser(
-    fullName,
+    firstName,
+    lastName,
     email,
     hashedPassword,
   )
@@ -101,7 +103,8 @@ export async function loginUser(
     refreshToken,
     user: {
       id: user.id,
-      fullName: user.fullName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
     },
   }

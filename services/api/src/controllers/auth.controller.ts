@@ -75,13 +75,15 @@ export async function register(
 ) {
   try {
     const {
-      fullName,
+      firstName,
+      lastName,
       email,
       password,
     } = req.body
 
     const user = await registerUser(
-      fullName,
+      firstName,
+      lastName,
       email,
       password,
     )
@@ -89,7 +91,8 @@ export async function register(
     return created(
       res,
       {
-        fullName: user.fullName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
       },
       "User registered successfully.",

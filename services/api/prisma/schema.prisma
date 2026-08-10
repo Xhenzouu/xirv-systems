@@ -22,7 +22,9 @@ enum DocumentStatus {
 model User {
   id        String   @id @default(cuid())
 
-  fullName  String
+  firstName String
+  lastName  String
+
   email     String   @unique
   password  String
 
@@ -33,7 +35,7 @@ model User {
 
   refreshTokens RefreshToken[]
   auditLogs     AuditLog[]
-  documents     Document[]  // 👈 Added
+  documents     Document[]
 
   @@map("users")
 }

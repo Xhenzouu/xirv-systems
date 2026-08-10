@@ -19,13 +19,15 @@ describe("User Repository", () => {
   describe("createUser", () => {
     it("should create a new user", async () => {
       const user = await createUser(
-        "Repo Test User",
+        "Repo",
+        "Test User",
         "repo@example.com",
-        "hashed_password",
+        "hashed_password"
       )
 
       expect(user).toBeDefined()
-      expect(user.fullName).toBe("Repo Test User")
+      expect(user.firstName).toBe("Repo")
+      expect(user.lastName).toBe("Test User")
       expect(user.email).toBe("repo@example.com")
       expect(user.id).toBeDefined()
     })
@@ -35,15 +37,16 @@ describe("User Repository", () => {
     it("should find a user by email", async () => {
       // Create a user first
       await createUser(
-        "Find Test",
-        "find@example.com",
-        "hashed_password",
+        "Repo",
+        "Test User",
+        "repo@example.com",
+        "hashed_password"
       )
 
-      const user = await findUserByEmail("find@example.com")
+      const user = await findUserByEmail("repo@example.com")
 
       expect(user).toBeDefined()
-      expect(user?.email).toBe("find@example.com")
+      expect(user?.email).toBe("repo@example.com")
     })
 
     it("should return null if user not found", async () => {
@@ -56,9 +59,10 @@ describe("User Repository", () => {
   describe("findUserById", () => {
     it("should find a user by id", async () => {
       const created = await createUser(
-        "Find Test User",
-        "findid@example.com",
-        "hashed_password",
+        "Repo",
+        "Test User",
+        "repo@example.com",
+        "hashed_password"
       )
 
       const user = await findUserById(created.id)

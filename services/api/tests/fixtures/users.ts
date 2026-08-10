@@ -1,11 +1,13 @@
 export const defaultUser = {
-  fullName: "Test User",
-
+  firstName: "Test",
+  lastName: "User",
+  email: "test@example.com",
   password: "Password123!",
 }
 
 export const defaultAdmin = {
-  fullName: "Admin User",
-
+  firstName: "Admin",
+  lastName: "User",
+  email: "admin@example.com",
   password: "Password123!",
 }

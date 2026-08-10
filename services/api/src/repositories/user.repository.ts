@@ -13,13 +13,15 @@ export async function findUserByEmail(
 }
 
 export async function createUser(
-  fullName: string,
+  firstName: string,
+  lastName: string,
   email: string,
   password: string,
 ) {
   return prisma.user.create({
     data: {
-      fullName,
+      firstName,
+      lastName,
       email,
       password,
     },
@@ -68,15 +70,15 @@ export async function findAllUsers() {
 
 export async function updateUser(
   id: string,
-  fullName: string,
+  firstName: string,
+  lastName: string,
   email: string,
 ) {
   return prisma.user.update({
-    where: {
-      id,
-    },
+    where: { id },
     data: {
-      fullName,
+      firstName,
+      lastName,
       email,
     },
   })

@@ -15,11 +15,10 @@ describe("RefreshToken Repository", () => {
   beforeEach(async () => {
     await clearDatabase()
 
-    const user = await createUser(
-      "Refresh Token Test",
-      "refresh@example.com",
-      "hashed_password",
-    )
+    const user = await createUser("Refresh", 
+      "Token Test", 
+      "refresh@example.com", 
+      "hashed_password")
     userId = user.id
   })
 
