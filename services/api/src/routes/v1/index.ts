@@ -8,9 +8,9 @@ import categoryRoutes from "./categories.routes.js"
 import tagRoutes from "./tags.routes.js"
 import aiRoutes from "./ai.routes.js"
 import ragRoutes from "./rag.routes.js"
+import workflowRoutes from "./workflow.routes.js"
 
 const router = Router()
-
 
 router.get("/", (_, res) => {
   res.json({
@@ -20,44 +20,14 @@ router.get("/", (_, res) => {
   })
 })
 
-
-router.use(
-  "/auth",
-  authRoutes,
-)
-
-router.use(
-  "/users",
-  userRoutes,
-)
-
-router.use(
-  "/admin",
-  adminRoutes,
-)
-
-router.use(
-  "/documents", 
-  documentRoutes
-)
-
-router.use(
-  "/categories", 
-  categoryRoutes
-)
-
-router.use(
-  "/tags", 
-  tagRoutes
-)
-
-router.use(
-  "/ai", 
-  aiRoutes)
-
-router.use(
-  "/rag", 
-  ragRoutes)
-
+router.use("/auth", authRoutes)
+router.use("/users", userRoutes)
+router.use("/admin", adminRoutes)
+router.use("/documents", documentRoutes)
+router.use("/categories", categoryRoutes)
+router.use("/tags", tagRoutes)
+router.use("/ai", aiRoutes)
+router.use("/rag", ragRoutes)
+router.use("/workflows", workflowRoutes)
 
 export default router
