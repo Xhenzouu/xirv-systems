@@ -14,10 +14,12 @@ describe("Auth Service", () => {
 
   describe("registerUser", () => {
     it("should register a new user", async () => {
-      const user = await registerUser("Test", 
-        "User", 
-        "test@example.com", 
-        "Password123!")
+      const user = await registerUser(
+        "Test",
+        "User",
+        "test@example.com",
+        "Password123!",
+      )
 
       expect(user).toBeDefined()
       expect(user.firstName).toBe("Test")
@@ -29,18 +31,20 @@ describe("Auth Service", () => {
 
     it("should throw if email already exists", async () => {
       // First registration
-      await await registerUser("Test", 
-        "User", 
-        "test@example.com", 
-        "Password123!")
+      await registerUser(
+        "First",
+        "User",
+        "test@example.com",
+        "Password123!",
+      )
 
       // Second registration with same email
       await expect(
-        await registerUser(
-          "Test", 
-          "User", 
-          "test@example.com", 
-          "Password123!"
+        registerUser(
+          "Duplicate",
+          "User",
+          "test@example.com",
+          "Password123!",
         ),
       ).rejects.toThrow("An account with this email already exists.")
     })
@@ -48,15 +52,15 @@ describe("Auth Service", () => {
 
   describe("loginUser", () => {
     it("should login a user and return tokens", async () => {
-      // First register a user
-      await registerUser("Test", 
-        "User", 
-        "test@example.com", 
-        "Password123!"
+      await registerUser(
+        "Login",
+        "Test",
+        "login@example.com",
+        "Password123!",
       )
 
       const result = await loginUser(
-        "test@example.com",
+        "login@example.com",
         "Password123!",
       )
 
@@ -64,7 +68,7 @@ describe("Auth Service", () => {
       expect(result.accessToken).toBeDefined()
       expect(result.refreshToken).toBeDefined()
       expect(result.user).toBeDefined()
-      expect(result.user.email).toBe("test@example.com")
+      expect(result.user.email).toBe("login@example.com")
     })
 
     it("should throw if email is invalid", async () => {
@@ -74,15 +78,15 @@ describe("Auth Service", () => {
     })
 
     it("should throw if password is invalid", async () => {
-      // First register a user
-      await registerUser("Test", 
-        "User", 
-        "test@example.com", 
-        "Password123!"
+      await registerUser(
+        "Password",
+        "Test",
+        "password@example.com",
+        "Password123!",
       )
 
       await expect(
-        loginUser("test@example.com", "WrongPassword!"),
+        loginUser("password@example.com", "WrongPassword!"),
       ).rejects.toThrow("Invalid email or password.")
     })
   })

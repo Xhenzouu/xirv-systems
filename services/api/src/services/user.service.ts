@@ -1,3 +1,4 @@
+import { prisma } from "../lib/prisma.js"
 import { ApiError } from "../errors/ApiError.js"
 import bcrypt from "bcrypt"
 import { security } from "../config/security.js"
@@ -28,30 +29,30 @@ export async function getUserById(
 
 export async function updateProfile(
   id: string,
-  firstName: string,
-  lastName: string,
-  email: string,
+  firstName?: string,
+  lastName?: string,
+  email?: string,
 ) {
   const user = await getUserById(id)
 
-  if (user.email !== email) {
-    const existingUser =
-      await findUserByEmail(email)
-
+  // Only check email if it's provided
+  if (email && user.email !== email) {
+    const existingUser = await findUserByEmail(email)
     if (existingUser) {
-      throw new ApiError(
-        409,
-        "Email is already in use.",
-      )
+      throw new ApiError(409, "Email is already in use.")
     }
   }
 
-  return updateUser(
-    id,
-    firstName,
-    lastName,
-    email,
-  )
+  // Only include fields that are provided
+  const updateData: any = {}
+  if (firstName !== undefined) updateData.firstName = firstName
+  if (lastName !== undefined) updateData.lastName = lastName
+  if (email !== undefined) updateData.email = email
+
+  return prisma.user.update({
+    where: { id },
+    data: updateData,
+  })
 }
 
 export async function changePassword(

@@ -70,17 +70,15 @@ export async function findAllUsers() {
 
 export async function updateUser(
   id: string,
-  firstName: string,
-  lastName: string,
-  email: string,
+  data: {
+    firstName?: string
+    lastName?: string
+    email?: string
+  },
 ) {
   return prisma.user.update({
     where: { id },
-    data: {
-      firstName,
-      lastName,
-      email,
-    },
+    data,
   })
 }
 
