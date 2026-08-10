@@ -2,6 +2,8 @@ import {
   describe,
   expect,
   it,
+  beforeAll,
+  afterAll,
 } from "vitest"
 
 import {
@@ -11,16 +13,25 @@ import {
 import {
   loginAsUser,
 } from "../helpers/auth.js"
+import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
 
 describe(
   "PATCH /api/v1/users/profile",
   () => {
+    let auth: any
+
+    beforeAll(async () => {
+      await clearDatabase()
+      auth = await loginAsUser()
+    })
+
+    afterAll(async () => {
+      await disconnectDatabase()
+    })
+
     it(
       "should update the user's profile",
       async () => {
-        const auth =
-          await loginAsUser()
-
         const response =
           await api
             .patch("/api/v1/users/profile")
@@ -31,7 +42,6 @@ describe(
             .send({
               firstName: "Updated",
               lastName: "Name",
-              email: auth.email,
             })
 
         expect(
@@ -67,7 +77,6 @@ describe(
             .send({
               firstName: "Updated",
               lastName: "Name",
-              email: "test@example.com",
             })
 
         expect(

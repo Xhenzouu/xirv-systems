@@ -1,27 +1,37 @@
-import { describe, expect, it, beforeAll } from "vitest"
+import { describe, expect, it, beforeAll, afterAll } from "vitest"
 import { api } from "../helpers/app.js"
+import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
 
 describe("Document Smoke Tests", () => {
   let accessToken: string
   let documentId: string
+  const testEmail = `doc-${Date.now()}@example.com`
+  const testPassword = "Password123!"
 
   beforeAll(async () => {
+    await clearDatabase()
+    // Register a user
     await api
       .post("/api/v1/auth/register")
       .send({
-        fullName: "Doc Test User",
-        email: "doc@example.com",
-        password: "Password123!",
+        firstName: "Doc",
+        lastName: "Test",
+        email: testEmail,
+        password: testPassword,
       })
 
     const loginResponse = await api
       .post("/api/v1/auth/login")
       .send({
-        email: "doc@example.com",
-        password: "Password123!",
+        email: testEmail,
+        password: testPassword,
       })
 
     accessToken = loginResponse.body.data.accessToken
+  })
+
+  afterAll(async () => {
+    await disconnectDatabase()
   })
 
   it("should upload a document", async () => {

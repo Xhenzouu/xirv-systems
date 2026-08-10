@@ -2,6 +2,8 @@ import {
   describe,
   expect,
   it,
+  beforeAll,
+  afterAll,
 } from "vitest"
 
 import {
@@ -12,22 +14,32 @@ import {
   loginAsAdmin,
   loginAsUser,
 } from "../helpers/auth.js"
+import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
 
 describe(
   "GET /api/v1/admin/users",
   () => {
+    let adminToken: string
+
+    beforeAll(async () => {
+      await clearDatabase()
+      const auth = await loginAsAdmin()
+      adminToken = auth.accessToken
+    })
+
+    afterAll(async () => {
+      await disconnectDatabase()
+    })
+
     it(
       "should allow an admin to retrieve all users",
       async () => {
-        const auth =
-          await loginAsAdmin()
-
         const response =
           await api
             .get("/api/v1/admin/users")
             .set(
               "Authorization",
-              `Bearer ${auth.accessToken}`,
+              `Bearer ${adminToken}`,
             )
 
         expect(
