@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
 
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
 
     "strict": true,
@@ -18,6 +18,15 @@
 
   "include": [
     "src/**/*.ts",
-    "src/**/*.d.ts"
-, "src/utils/date.ts", "src/utils/crypto.ts"  ]
+    "src/**/*.d.ts", 
+    "src/utils/date.ts", 
+    "src/utils/crypto.ts",
+    "tests/**/*"  
+  ],
+    
+    "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
 }

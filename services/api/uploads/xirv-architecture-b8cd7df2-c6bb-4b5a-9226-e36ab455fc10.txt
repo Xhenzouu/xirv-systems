@@ -1,0 +1,38 @@
+@"
+XIRV Systems Architecture Overview
+
+XIRV Systems is built on a modern, scalable architecture designed for enterprise-grade AI applications.
+
+Backend Architecture:
+- Layered Architecture: Routes → Controllers → Services → Repositories → Prisma → PostgreSQL
+- REST API with JWT authentication and refresh token rotation
+- Role-Based Access Control (RBAC) with USER, ADMIN, and SUPER_ADMIN roles
+- Rate limiting and audit logging for security and compliance
+
+AI Integration:
+- AI Gateway with provider abstraction (OpenAI, Ollama, Anthropic)
+- RAG (Retrieval-Augmented Generation) pipeline
+- Vector search using pgvector for semantic search
+- Document chunking and embedding generation
+
+Frontend Architecture:
+- React with TypeScript
+- Tailwind CSS for styling
+- React Router for navigation
+- React Query for data fetching
+- Axios for API communication
+
+Development Workflow:
+- pnpm monorepo with TurboRepo
+- Vitest for testing
+- GitHub Actions for CI/CD
+- Docker for containerization
+
+Key Design Principles:
+1. Separation of Concerns
+2. Security by Default
+3. Knowledge Before Intelligence
+4. Observability by Design
+5. Automation Wherever Practical
+6. Documentation as a Deliverable
+"@ | Out-File -FilePath .\xirv-architecture.txt -Encoding utf8

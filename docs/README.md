@@ -76,6 +76,74 @@ docs/
 
 ---
 
+# Project Overview
+
+## What is XIRV Systems?
+
+XIRV Systems is an **enterprise intelligence platform** designed to help organizations manage their knowledge and leverage artificial intelligence. It combines document management, AI-powered search, and Retrieval-Augmented Generation (RAG) into a single, cohesive platform.
+
+## Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Knowledge Management** | Upload, organize, search, and manage documents with categories and tags |
+| **AI Intelligence** | Conversational AI powered by Ollama with RAG support |
+| **RAG Pipeline** | Semantic search with pgvector, document chunking, and source attribution |
+| **Authentication** | JWT with refresh token rotation and RBAC (USER, ADMIN, SUPER_ADMIN) |
+| **Analytics** | Usage metrics, document statistics, and activity charts |
+| **Audit Logging** | Complete audit trail of user actions |
+| **API Documentation** | Swagger/OpenAPI interactive documentation |
+
+## Tech Stack
+
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| Node.js + Express | API server |
+| TypeScript | Type-safe JavaScript |
+| PostgreSQL + Prisma | Database and ORM |
+| JWT | Authentication |
+| bcrypt | Password hashing |
+| Zod | Validation |
+| Pino | Logging |
+| Vitest | Testing |
+| pnpm + TurboRepo | Monorepo management |
+
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| React + TypeScript | UI framework |
+| Vite | Build tool |
+| React Router | Navigation |
+| Recharts | Charts |
+| Lucide React | Icons |
+
+### AI
+| Technology | Purpose |
+|------------|---------|
+| Ollama | Local LLM inference |
+| OpenAI | Cloud LLM (optional) |
+| pgvector | Vector search |
+
+---
+
+# Project Status
+
+| Phase | Status | Completion |
+|-------|--------|------------|
+| Backend Foundation | ✅ Complete | 100% |
+| Production Hardening | ✅ Complete | 100% |
+| Developer Experience | ✅ Complete | 90% (Docker pending) |
+| Knowledge Management | ✅ Complete | 100% |
+| AI Gateway | ✅ Complete | 100% |
+| RAG | ✅ Complete | 100% |
+| Frontend | ✅ Complete | 100% |
+| Workflow Automation | ⏳ Planned | 0% |
+| Organizations & Teams | ⏳ Planned | 0% |
+| Production Deployment | ⏳ Planned | 0% |
+
+---
+
 # Backend Documentation
 
 The backend documentation defines the current implementation of the XIRV API and supporting infrastructure.

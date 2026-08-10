@@ -14,11 +14,12 @@ function getEnv(name: string): string {
   return value
 }
 
-const JWT_SECRET = getEnv("JWT_SECRET")
+// Use JWT_ACCESS_SECRET instead of JWT_SECRET
+const JWT_ACCESS_SECRET = getEnv("JWT_ACCESS_SECRET")
 const JWT_REFRESH_SECRET = getEnv("JWT_REFRESH_SECRET")
 
 const JWT_ACCESS_EXPIRES_IN =
-  process.env.JWT_EXPIRES_IN || "15m"
+  process.env.JWT_ACCESS_EXPIRES_IN || "15m"
 
 const JWT_REFRESH_EXPIRES_IN =
   process.env.JWT_REFRESH_EXPIRES_IN || "30d"
@@ -46,7 +47,7 @@ export function generateAccessToken(
       email,
       role,
     },
-    JWT_SECRET,
+    JWT_ACCESS_SECRET,
     {
       expiresIn:
         JWT_ACCESS_EXPIRES_IN as jwt.SignOptions["expiresIn"],
@@ -74,7 +75,7 @@ export function verifyAccessToken(
 ): AccessTokenPayload {
   return jwt.verify(
     token,
-    JWT_SECRET,
+    JWT_ACCESS_SECRET,
   ) as AccessTokenPayload
 }
 

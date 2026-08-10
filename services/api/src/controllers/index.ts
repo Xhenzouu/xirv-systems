@@ -1,3 +1,6 @@
 export * from "./auth.controller.js"
 export * from "./user.controller.js"
 export * from "./admin.controller.js"
+export * from "./document.controller.js"
+export * from "./category.controller.js"
+export * from "./tag.controller.js"

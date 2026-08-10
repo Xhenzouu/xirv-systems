@@ -6,6 +6,8 @@ import type {
 
 import { v4 as uuid } from "uuid"
 
+import { requestContext } from "../lib/requestContext.js"
+
 export function requestId(
   req: Request,
   res: Response,
@@ -20,5 +22,11 @@ export function requestId(
     id,
   )
 
-  next()
+  // Run the rest of the request in the request context
+  requestContext.run(
+    { requestId: id },
+    () => {
+      next()
+    },
+  )
 }

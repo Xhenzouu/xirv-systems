@@ -3,7 +3,11 @@ import { Router } from "express"
 import authRoutes from "../auth.routes.js"
 import userRoutes from "./user.routes.js"
 import adminRoutes from "./admin.routes.js"
-
+import documentRoutes from "./documents.routes.js"
+import categoryRoutes from "./categories.routes.js"
+import tagRoutes from "./tags.routes.js"
+import aiRoutes from "./ai.routes.js"
+import ragRoutes from "./rag.routes.js"
 
 const router = Router()
 
@@ -31,6 +35,29 @@ router.use(
   "/admin",
   adminRoutes,
 )
+
+router.use(
+  "/documents", 
+  documentRoutes
+)
+
+router.use(
+  "/categories", 
+  categoryRoutes
+)
+
+router.use(
+  "/tags", 
+  tagRoutes
+)
+
+router.use(
+  "/ai", 
+  aiRoutes)
+
+router.use(
+  "/rag", 
+  ragRoutes)
 
 
 export default router

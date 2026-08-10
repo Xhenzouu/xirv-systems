@@ -2,29 +2,71 @@ import {
   createContext,
   useContext,
   useState,
-} from "react"
+  useEffect,
+  type ReactNode,
+} from 'react'
+import { authApi } from '../api'
+import type { User } from '../api'
 
 interface AuthContextType {
   isAuthenticated: boolean
-  login: () => void
-  logout: () => void
+  isLoading: boolean
+  user: User | null
+  login: (email: string, password: string) => Promise<void>
+  register: (fullName: string, email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-export function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null)
 
-  function login() {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('accessToken')
+      if (token) {
+        try {
+          const userData = await authApi.getProfile()
+          setUser(userData)
+          setAuthenticated(true)
+        } catch {
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+        }
+      }
+      setIsLoading(false)
+    }
+    checkAuth()
+  }, [])
+
+  const login = async (email: string, password: string) => {
+    const data = await authApi.login({ email, password })
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('refreshToken', data.refreshToken)
+    setUser(data.user)
     setAuthenticated(true)
   }
 
-  function logout() {
+  const register = async (fullName: string, email: string, password: string) => {
+    await authApi.register({ fullName, email, password })
+    await login(email, password)
+  }
+
+  const logout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (refreshToken) {
+      try {
+        await authApi.logout(refreshToken)
+      } catch {
+        // Ignore errors on logout
+      }
+    }
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    setUser(null)
     setAuthenticated(false)
   }
 
@@ -32,7 +74,10 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isLoading,
+        user,
         login,
+        register,
         logout,
       }}
     >
@@ -42,13 +87,9 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-
   const context = useContext(AuthContext)
-
   if (!context) {
-    throw new Error("useAuth must be used inside AuthProvider")
+    throw new Error('useAuth must be used inside AuthProvider')
   }
-
   return context
-
 }

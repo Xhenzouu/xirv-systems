@@ -1,21 +1,15 @@
-import "./AuthCard.css"
+import './AuthCard.css'
 
 interface AuthCardProps {
   children: React.ReactNode
 }
 
-function AuthCard({
-  children,
-}: AuthCardProps) {
-
+export default function AuthCard({ children }: AuthCardProps) {
   return (
-    <section className="auth-card">
-
-      {children}
-
-    </section>
+    <div className="auth-card">
+      <div className="auth-card-content">
+        {children}
+      </div>
+    </div>
   )
-
 }
-
-export default AuthCard

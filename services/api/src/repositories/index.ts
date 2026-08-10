@@ -1,2 +1,5 @@
 export * from "./user.repository.js"
 export * from "./refresh-token.repository.js"
+export * from "./document.repository.js"
+export * from "./category.repository.js"
+export * from "./tag.repository.js"

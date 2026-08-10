@@ -1,17 +1,8 @@
 import dotenv from "dotenv"
 
-import {
-  beforeEach,
-} from "vitest"
-
-import {
-  clearDatabase,
-} from "./helpers/database.js"
-
 dotenv.config({
   path: ".env.test",
 })
 
-beforeEach(async () => {
-  await clearDatabase()
-})
+// Don't clear database automatically - let each test handle its own setup
+// This prevents conflicts between tests

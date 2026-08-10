@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom"
-
 import MainLayout from "../layouts/MainLayout"
 import AppShell from "../components/layout/AppShell"
 import AuthLayout from "../layouts/AuthLayout"
@@ -25,55 +24,86 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
+    path: "/login",
     element: <AuthLayout />,
     children: [
       {
-        path: "/login",
+        index: true,
         element: <Login />,
       },
+    ],
+  },
+  {
+    path: "/register",
+    element: <AuthLayout />,
+    children: [
       {
-        path: "/register",
+        index: true,
         element: <Register />,
       },
+    ],
+  },
+  {
+    path: "/forgot-password",
+    element: <AuthLayout />,
+    children: [
       {
-        path: "/forgot-password",
+        index: true,
         element: <ForgotPassword />,
       },
     ],
   },
-
   {
+    path: "/dashboard",
     element: <AppShell />,
     children: [
       {
-        path: "/dashboard",
+        index: true,
         element: <Dashboard />,
       },
-
+    ],
+  },
+  {
+    path: "/ai",
+    element: <AppShell />,
+    children: [
       {
-        path: "/ai",
+        index: true,
         element: <AI />,
       },
-
+    ],
+  },
+  {
+    path: "/knowledge",
+    element: <AppShell />,
+    children: [
       {
-        path: "/knowledge",
+        index: true,
         element: <Knowledge />,
       },
-
+    ],
+  },
+  {
+    path: "/analytics",
+    element: <AppShell />,
+    children: [
       {
-        path: "/analytics",
+        index: true,
         element: <Analytics />,
       },
-
+    ],
+  },
+  {
+    path: "/settings",
+    element: <AppShell />,
+    children: [
       {
-        path: "/settings",
+        index: true,
         element: <Settings />,
       },
     ],
   },
 ])
-
 
 export default router

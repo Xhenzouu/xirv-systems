@@ -1,14 +1,13 @@
-import "./AuthLayout.css"
-
 import { Outlet } from "react-router-dom"
+import "./AuthLayout.css"
 
 function AuthLayout() {
   return (
-    <main className="auth-layout">
-
-      <Outlet />
-
-    </main>
+    <div className="auth-layout">
+      <div className="auth-layout-container">
+        <Outlet />
+      </div>
+    </div>
   )
 }
 

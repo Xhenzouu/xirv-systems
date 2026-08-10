@@ -1,11 +1,14 @@
 import { Router } from "express"
 
 import v1Routes from "./v1/index.js"
-import healthRoutes from "./health.routes.js"
+import swaggerRoutes from "./swagger.routes.js"
 
 const router = Router()
 
-router.use("/health", healthRoutes)
+// API routes
 router.use("/api/v1", v1Routes)
+
+// Documentation routes
+router.use("/api", swaggerRoutes)
 
 export default router

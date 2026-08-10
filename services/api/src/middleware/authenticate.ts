@@ -4,52 +4,57 @@ import type {
   Response,
 } from "express"
 
-import {
-  ApiError,
-} from "../errors/ApiError.js"
+import jwt from "jsonwebtoken"
 
-import {
-  verifyAccessToken,
-} from "../lib/jwt.js"
+import { prisma } from "../lib/prisma.js"
+import { ApiError } from "../errors/ApiError.js"
 
 export async function authenticate(
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction,
 ) {
   try {
-    const authHeader =
-      req.headers.authorization
+    const authHeader = req.headers.authorization
 
-    if (
-      !authHeader ||
-      !authHeader.startsWith("Bearer ")
-    ) {
-      throw new ApiError(
-        401,
-        "Authentication required.",
+    if (!authHeader) {
+      throw new ApiError(401, "Authentication required.")
+    }
+
+    const parts = authHeader.split(" ")
+
+    if (parts.length !== 2 || parts[0] !== "Bearer") {
+      throw new ApiError(401, "Invalid authorization header.")
+    }
+
+    const token = parts[1]
+
+    let payload: any
+
+    try {
+      payload = jwt.verify(
+        token,
+        process.env.JWT_ACCESS_SECRET!,
       )
+    } catch {
+      throw new ApiError(401, "Invalid or expired token.")
     }
 
-    const token =
-      authHeader.substring(7)
+    const user = await prisma.user.findUnique({
+      where: {
+        id: payload.sub,
+      },
+    })
 
-    const payload =
-      verifyAccessToken(token)
-
-    req.user = {
-      id: payload.sub,
-      email: payload.email,
-      role: payload.role,
+    if (!user) {
+      throw new ApiError(401, "User not found.")
     }
+
+    // Attach the FULL user object, not a partial one
+    req.user = user
 
     next()
-  } catch {
-    next(
-      new ApiError(
-        401,
-        "Invalid or expired access token.",
-      ),
-    )
+  } catch (error) {
+    next(error)
   }
 }

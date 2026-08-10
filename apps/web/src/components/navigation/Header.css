@@ -1,13 +1,13 @@
 .xirv-header {
   display: flex;
-
-  justify-content: space-between;
-
   align-items: center;
-
+  justify-content: space-between;
   padding: var(--space-md) var(--space-xl);
-
   background: var(--xirv-primary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .xirv-header a {
@@ -18,4 +18,28 @@
 .xirv-header nav {
   display: flex;
   gap: var(--space-md);
+}
+
+.xirv-header nav a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.xirv-header nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .xirv-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .xirv-header nav a {
+    font-size: 12px;
+    padding: var(--space-xs);
+  }
 }

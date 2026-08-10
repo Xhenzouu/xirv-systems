@@ -1,19 +1,58 @@
-.user-profile {
-  color: white;
-
+.xirv-user-profile {
   display: flex;
-
   align-items: center;
+  gap: var(--space-sm);
 }
 
-.user-profile div {
+.xirv-user-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: white;
+}
+
+.xirv-user-login {
+  color: var(--xirv-accent);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--text-sm);
+}
+
+.xirv-user-login:hover {
+  opacity: 0.8;
+}
+
+.xirv-user-logout {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   display: flex;
-
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.user-profile small {
-  font-size: 12px;
+.xirv-user-logout:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
 
-  opacity: 0.7;
+/* Responsive */
+@media (max-width: 480px) {
+  .xirv-user-name {
+    font-size: 12px;
+  }
+
+  .xirv-user-logout {
+    width: 28px;
+    height: 28px;
+  }
+
+  .xirv-user-logout svg {
+    width: 14px;
+    height: 14px;
+  }
 }

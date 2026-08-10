@@ -1,0 +1,9 @@
+XIRV Systems is an enterprise intelligence platform designed to help organizations manage their knowledge and leverage artificial intelligence.
+
+The platform includes several key features:
+1. Document Management - Upload, organize, and search documents
+2. AI Chat - Conversational AI powered by Ollama
+3. RAG (Retrieval-Augmented Generation) - Answer questions based on your documents
+4. Knowledge Base - Structured knowledge repository
+
+XIRV Systems uses a modern technology stack including Node.js, TypeScript, PostgreSQL, Prisma, and Ollama for local AI inference.
