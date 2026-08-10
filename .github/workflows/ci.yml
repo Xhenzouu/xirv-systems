@@ -55,6 +55,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build AI Gateway
+        run: pnpm build
+        working-directory: services/ai-gateway
+
       - name: Generate Prisma client
         run: pnpm prisma generate
         working-directory: services/api
@@ -78,6 +82,6 @@ jobs:
           JWT_ACCESS_SECRET: test_secret_32_chars_long_1234567890
           JWT_REFRESH_SECRET: test_refresh_secret_32_chars_long_1234567890
 
-      - name: Build
+      - name: Build API
         run: pnpm build
         working-directory: services/api

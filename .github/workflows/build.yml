@@ -27,7 +27,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
+      - name: Build AI Gateway
+        run: pnpm build
+        working-directory: services/ai-gateway
+
+      - name: Build API
         run: pnpm build
         working-directory: services/api
 
