@@ -1,36 +1,28 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, beforeAll, afterAll } from "vitest"
 import { api } from "../helpers/app.js"
+import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
+import { loginAsAdmin } from "../helpers/auth.js"
 
 describe("Admin Smoke Tests", () => {
   let adminToken: string
 
-  it("should create an admin and list all users", async () => {
-    // Register a user
-    const email = `admin-${Date.now()}@example.com`
-    const password = "Password123!"
+  beforeAll(async () => {
+    await clearDatabase()
+    const { accessToken } = await loginAsAdmin()
+    adminToken = accessToken
+  })
 
-    const registerResponse = await api
-      .post("/api/v1/auth/register")
-      .send({
-        fullName: "Admin User",
-        email,
-        password,
-      })
+  afterAll(async () => {
+    await disconnectDatabase()
+  })
 
-    expect(registerResponse.status).toBe(201)
+  it("should list all users", async () => {
+    const response = await api
+      .get("/api/v1/admin/users")
+      .set("Authorization", `Bearer ${adminToken}`)
 
-    // Login as the user
-    const loginResponse = await api
-      .post("/api/v1/auth/login")
-      .send({ email, password })
-
-    expect(loginResponse.status).toBe(200)
-
-    // Note: To make this user an admin, you'd need a super admin to promote them
-    // For now, we'll just test that the endpoint exists
-    // This test will need to be updated once you have a way to create admin users in tests
-
-    // For now, skip this test or test with a known admin user
-    // We'll use the loginAsAdmin helper from a separate setup
+    expect(response.status).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(Array.isArray(response.body.data)).toBe(true)
   })
 })

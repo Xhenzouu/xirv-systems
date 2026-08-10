@@ -38,7 +38,9 @@ function UserProfile() {
   return (
     <>
       <div className="xirv-user-profile">
-        <span className="xirv-user-name">{user.fullName}</span>
+        <span className="xirv-user-name">
+          {user.firstName} {user.lastName}
+        </span>
         <button
           onClick={() => setShowLogoutModal(true)}
           className="xirv-user-logout"

@@ -10,7 +10,8 @@ describe("Authentication Smoke Tests", () => {
     const response = await api
       .post("/api/v1/auth/register")
       .send({
-        fullName: "Smoke Test User",
+        firstName: "Smoke",
+        lastName: "Test",
         email: testEmail,
         password: testPassword,
       })
@@ -46,7 +47,6 @@ describe("Authentication Smoke Tests", () => {
   })
 
   it("should refresh the access token", async () => {
-    // First login to get a refresh token
     const loginResponse = await api
       .post("/api/v1/auth/login")
       .send({

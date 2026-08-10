@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 import { documentApi } from '../api'
 import SystemOverview from '../components/dashboard/SystemOverview'
 import MetricCard from '../components/dashboard/MetricCard'
@@ -9,7 +8,6 @@ import QuickActions from '../components/dashboard/QuickActions'
 import './Dashboard.css'
 
 function Dashboard() {
-  const { user } = useAuth()
   const [documentCount, setDocumentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -32,7 +30,7 @@ function Dashboard() {
       <DashboardHero />
 
       <header className="dashboard-header">
-        <h1>Welcome back, {user?.fullName || 'User'}!</h1>
+        <h1>Dashboard Overview</h1>
         <p>Here's what's happening with your XIRV Systems platform.</p>
       </header>
 

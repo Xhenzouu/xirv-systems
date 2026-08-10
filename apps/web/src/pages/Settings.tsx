@@ -10,7 +10,8 @@ function Settings() {
   const toast = useToast()
   
   // Profile form
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [isProfileLoading, setIsProfileLoading] = useState(false)
   
@@ -31,7 +32,8 @@ function Settings() {
 
   useEffect(() => {
     if (user) {
-      setFullName(user.fullName || '')
+      setFirstName(user.firstName || '')
+      setLastName(user.lastName || '')
       setEmail(user.email || '')
     }
   }, [user])
@@ -43,7 +45,8 @@ function Settings() {
 
     try {
       await api.patch('/users/profile', {
-        fullName,
+        firstName,
+        lastName,
         email,
       })
       
@@ -52,7 +55,8 @@ function Settings() {
       try {
         const response = await api.get('/users/profile')
         const updatedUser = response.data.data
-        setFullName(updatedUser.fullName)
+        setFirstName(updatedUser.firstName)
+        setLastName(updatedUser.lastName)
         setEmail(updatedUser.email)
       } catch {
         // If we can't refresh, just keep the current values
@@ -145,14 +149,27 @@ function Settings() {
           </div>
           <form onSubmit={handleProfileUpdate} className="settings-form">
             <div className="settings-form-group">
-              <label>Full Name</label>
+              <label>First Name</label>
               <div className="settings-input-with-icon">
                 <User size={18} />
                 <input
                   type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Your full name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
+                  required
+                />
+              </div>
+            </div>
+            <div className="settings-form-group">
+              <label>Last Name</label>
+              <div className="settings-input-with-icon">
+                <User size={18} />
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
                   required
                 />
               </div>

@@ -41,37 +41,37 @@ export class InstanceService {
   static async listInstances(
     workflowId?: string,
     options?: {
-      status?: WorkflowStatus
-      limit?: number
-      offset?: number
+        status?: WorkflowStatus
+        limit?: number
+        offset?: number
     },
-  ) {
+    ) {
     const { status, limit = 20, offset = 0 } = options || {}
 
     const where: any = {
-      ...(workflowId && { workflowId }),
-      ...(status && { status }),
+        ...(workflowId && { workflowId }),
+        ...(status && { status }),
     }
 
     const [instances, total] = await Promise.all([
-      prisma.workflowInstance.findMany({
+        prisma.workflowInstance.findMany({
         where,
         include: {
-          workflow: {
+            workflow: {
             select: {
-              id: true,
-              name: true,
+                id: true,
+                name: true,
             },
-          },
-          _count: {
+            },
+            _count: {
             select: { tasks: true },
-          },
+            },
         },
         orderBy: { startedAt: "desc" },
         skip: offset,
         take: limit,
-      }),
-      prisma.workflowInstance.count({ where }),
+        }),
+        prisma.workflowInstance.count({ where }),
     ])
 
     return { instances, total, limit, offset }

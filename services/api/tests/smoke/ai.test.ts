@@ -1,26 +1,37 @@
-import { describe, expect, it, beforeAll } from "vitest"
+import { describe, expect, it, beforeAll, afterAll } from "vitest"
 import { api } from "../helpers/app.js"
+import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
 
 describe("AI Smoke Tests", () => {
   let accessToken: string
 
   beforeAll(async () => {
-    await api
+    await clearDatabase()
+    // Register a user
+    const registerResponse = await api
       .post("/api/v1/auth/register")
       .send({
-        fullName: "AI Test User",
-        email: "ai-test@example.com",
+        firstName: "AI",
+        lastName: "Test",
+        email: `ai-${Date.now()}@example.com`,
         password: "Password123!",
       })
 
+    expect(registerResponse.status).toBe(201)
+
+    // Login
     const loginResponse = await api
       .post("/api/v1/auth/login")
       .send({
-        email: "ai-test@example.com",
+        email: registerResponse.body.data.email,
         password: "Password123!",
       })
 
     accessToken = loginResponse.body.data.accessToken
+  })
+
+  afterAll(async () => {
+    await disconnectDatabase()
   })
 
   it("should send a chat message", async () => {

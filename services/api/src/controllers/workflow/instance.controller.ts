@@ -77,6 +77,22 @@ export async function listInstances(
 
     const workflowIdStr = getStringFromQuery(workflowId)
 
+    // If workflowId is provided, verify access
+    if (workflowIdStr) {
+      try {
+        const workflow = await WorkflowService.getWorkflow(workflowIdStr)
+        if (workflow.createdBy !== user.id && user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+          throw new ApiError(403, "Access denied")
+        }
+      } catch (error) {
+        // If workflow not found, return empty results
+        if (error instanceof ApiError && error.statusCode === 404) {
+          return ok(res, { instances: [], total: 0, limit: 20, offset: 0 }, "Instances retrieved successfully")
+        }
+        throw error
+      }
+    }
+
     const result = await InstanceService.listInstances(
       workflowIdStr,
       {

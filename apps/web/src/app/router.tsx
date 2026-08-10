@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom"
 import MainLayout from "../layouts/MainLayout"
 import AppShell from "../components/layout/AppShell"
 import AuthLayout from "../layouts/AuthLayout"
+import ProtectedRoute from "../components/auth/ProtectedRoute"
 
 import Home from "../pages/Home"
 import Dashboard from "../pages/Dashboard"
@@ -55,51 +56,26 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
-    element: <AppShell />,
+    element: <ProtectedRoute><AppShell /></ProtectedRoute>,
     children: [
       {
-        index: true,
+        path: "/dashboard",
         element: <Dashboard />,
       },
-    ],
-  },
-  {
-    path: "/ai",
-    element: <AppShell />,
-    children: [
       {
-        index: true,
+        path: "/ai",
         element: <AI />,
       },
-    ],
-  },
-  {
-    path: "/knowledge",
-    element: <AppShell />,
-    children: [
       {
-        index: true,
+        path: "/knowledge",
         element: <Knowledge />,
       },
-    ],
-  },
-  {
-    path: "/analytics",
-    element: <AppShell />,
-    children: [
       {
-        index: true,
+        path: "/analytics",
         element: <Analytics />,
       },
-    ],
-  },
-  {
-    path: "/settings",
-    element: <AppShell />,
-    children: [
       {
-        index: true,
+        path: "/settings",
         element: <Settings />,
       },
     ],

@@ -9,7 +9,8 @@ export default function RegisterForm() {
   const { register } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -35,7 +36,7 @@ export default function RegisterForm() {
     setIsLoading(true)
 
     try {
-      await register(fullName, email, password)
+      await register(firstName, lastName, email, password)
       toast.success('Account created! Welcome to XIRV Systems 🚀')
       navigate('/dashboard')
     } catch (err: any) {
@@ -59,18 +60,35 @@ export default function RegisterForm() {
         </div>
       )}
 
-      <div className="register-form-group">
-        <label>Full Name</label>
-        <div className="register-input-wrapper">
-          <User size={18} className="register-input-icon" />
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="John Doe"
-            required
-            autoFocus
-          />
+      {/* Name Row - First Name & Last Name side by side */}
+      <div className="register-name-row">
+        <div className="register-form-group register-form-group-half">
+          <label>First Name</label>
+          <div className="register-input-wrapper">
+            <User size={18} className="register-input-icon" />
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="John"
+              required
+              autoFocus
+            />
+          </div>
+        </div>
+
+        <div className="register-form-group register-form-group-half">
+          <label>Last Name</label>
+          <div className="register-input-wrapper">
+            <User size={18} className="register-input-icon" />
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Doe"
+              required
+            />
+          </div>
         </div>
       </div>
 

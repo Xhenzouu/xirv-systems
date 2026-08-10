@@ -7,11 +7,12 @@ import { prisma } from "./prisma.js"
 async function createTestUserDirectly() {
   const email = `${randomUUID()}@example.com`
   const password = "Password123!"
-  const fullName = "Test User"
+  const firstName = "Test"
+  const lastName = "User"
 
   const response = await api
     .post("/api/v1/auth/register")
-    .send({ fullName, email, password })
+    .send({ firstName, lastName, email, password })
 
   if (response.status !== 201) {
     throw new Error("Failed to create test user")
@@ -20,13 +21,14 @@ async function createTestUserDirectly() {
   return { 
     email, 
     password, 
-    fullName,  // <- Make sure fullName is returned
+    firstName,
+    lastName,
     id: response.body.data.id 
   }
 }
 
 export async function loginAsUser() {
-  const { email, password, fullName, id } = await createTestUserDirectly()
+  const { email, password, firstName, lastName, id } = await createTestUserDirectly()
 
   const response = await api
     .post("/api/v1/auth/login")
@@ -40,7 +42,8 @@ export async function loginAsUser() {
     id,
     email,
     password,
-    fullName,  // <- Include fullName in the return
+    firstName,
+    lastName,
     response,
     accessToken: response.body.data.accessToken,
     refreshToken: response.body.data.refreshToken,
@@ -48,7 +51,7 @@ export async function loginAsUser() {
 }
 
 export async function loginAsAdmin() {
-  const { email, password, fullName, id } = await createTestUserDirectly()
+  const { email, password, firstName, lastName, id } = await createTestUserDirectly()
 
   // Promote to admin
   await prisma.user.update({
@@ -68,7 +71,8 @@ export async function loginAsAdmin() {
     id,
     email,
     password,
-    fullName,  // <- Include fullName in the return
+    firstName,
+    lastName,
     response,
     accessToken: response.body.data.accessToken,
     refreshToken: response.body.data.refreshToken,
@@ -76,7 +80,7 @@ export async function loginAsAdmin() {
 }
 
 export async function loginAsSuperAdmin() {
-  const { email, password, fullName, id } = await createTestUserDirectly()
+  const { email, password, firstName, lastName, id } = await createTestUserDirectly()
 
   await prisma.user.update({
     where: { email },
@@ -95,7 +99,8 @@ export async function loginAsSuperAdmin() {
     id,
     email,
     password,
-    fullName,
+    firstName,
+    lastName,
     response,
     accessToken: response.body.data.accessToken,
     refreshToken: response.body.data.refreshToken,
