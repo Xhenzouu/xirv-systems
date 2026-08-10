@@ -19,7 +19,7 @@ describe(
     it(
       "should allow an admin to retrieve all users",
       async () => {
-        const admin =
+        const auth =
           await loginAsAdmin()
 
         const response =
@@ -27,7 +27,7 @@ describe(
             .get("/api/v1/admin/users")
             .set(
               "Authorization",
-              `Bearer ${admin.accessToken}`,
+              `Bearer ${auth.accessToken}`,
             )
 
         expect(
@@ -49,7 +49,7 @@ describe(
     it(
       "should reject a normal user",
       async () => {
-        const user =
+        const auth =
           await loginAsUser()
 
         const response =
@@ -57,7 +57,7 @@ describe(
             .get("/api/v1/admin/users")
             .set(
               "Authorization",
-              `Bearer ${user.accessToken}`,
+              `Bearer ${auth.accessToken}`,
             )
 
         expect(
@@ -71,12 +71,11 @@ describe(
     )
 
     it(
-      "should reject unauthenticated requests",
+      "should reject requests without a token",
       async () => {
         const response =
-          await api.get(
-            "/api/v1/admin/users",
-          )
+          await api
+            .get("/api/v1/admin/users")
 
         expect(
           response.status,

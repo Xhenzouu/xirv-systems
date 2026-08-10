@@ -29,10 +29,8 @@ describe(
               `Bearer ${auth.accessToken}`,
             )
             .send({
-              currentPassword:
-                "Password123!",
-              newPassword:
-                "NewPassword123!",
+              currentPassword: auth.password,
+              newPassword: "NewPassword123!",
             })
 
         expect(
@@ -42,6 +40,58 @@ describe(
         expect(
           response.body.success,
         ).toBe(true)
+
+        expect(
+          response.body.message,
+        ).toBe(
+          "Password updated successfully.",
+        )
+      },
+    )
+
+    it(
+      "should reject requests without a token",
+      async () => {
+        const response =
+          await api
+            .patch("/api/v1/users/password")
+            .send({
+              currentPassword: "Password123!",
+              newPassword: "NewPassword123!",
+            })
+
+        expect(
+          response.status,
+        ).toBe(401)
+
+        expect(
+          response.body.success,
+        ).toBe(false)
+      },
+    )
+
+    it(
+      "should reject an invalid token",
+      async () => {
+        const response =
+          await api
+            .patch("/api/v1/users/password")
+            .set(
+              "Authorization",
+              "Bearer invalid-token",
+            )
+            .send({
+              currentPassword: "Password123!",
+              newPassword: "NewPassword123!",
+            })
+
+        expect(
+          response.status,
+        ).toBe(401)
+
+        expect(
+          response.body.success,
+        ).toBe(false)
       },
     )
   },

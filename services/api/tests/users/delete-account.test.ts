@@ -29,8 +29,7 @@ describe(
               `Bearer ${auth.accessToken}`,
             )
             .send({
-              password:
-                "Password123!",
+              password: auth.password,
             })
 
         expect(
@@ -40,6 +39,12 @@ describe(
         expect(
           response.body.success,
         ).toBe(true)
+
+        expect(
+          response.body.message,
+        ).toBe(
+          "Account deleted successfully.",
+        )
       },
     )
   },

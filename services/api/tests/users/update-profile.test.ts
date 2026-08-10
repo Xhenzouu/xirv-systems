@@ -16,7 +16,7 @@ describe(
   "PATCH /api/v1/users/profile",
   () => {
     it(
-      "should update the authenticated user's profile",
+      "should update the user's profile",
       async () => {
         const auth =
           await loginAsUser()
@@ -29,10 +29,9 @@ describe(
               `Bearer ${auth.accessToken}`,
             )
             .send({
-              fullName:
-                "Updated Test User",
-              email:
-                `updated-${Date.now()}@example.com`,
+              firstName: "Updated",
+              lastName: "Name",
+              email: auth.email,
             })
 
         expect(
@@ -44,10 +43,40 @@ describe(
         ).toBe(true)
 
         expect(
-          response.body.data.fullName,
+          response.body.message,
         ).toBe(
-          "Updated Test User",
+          "Profile updated successfully.",
         )
+
+        expect(
+          response.body.data.firstName,
+        ).toBe("Updated")
+
+        expect(
+          response.body.data.lastName,
+        ).toBe("Name")
+      },
+    )
+
+    it(
+      "should reject requests without a token",
+      async () => {
+        const response =
+          await api
+            .patch("/api/v1/users/profile")
+            .send({
+              firstName: "Updated",
+              lastName: "Name",
+              email: "test@example.com",
+            })
+
+        expect(
+          response.status,
+        ).toBe(401)
+
+        expect(
+          response.body.success,
+        ).toBe(false)
       },
     )
   },

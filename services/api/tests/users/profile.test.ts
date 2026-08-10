@@ -50,9 +50,15 @@ describe(
         )
 
         expect(
-          response.body.data.fullName,
+          response.body.data.firstName,
         ).toBe(
-          auth.fullName,
+          auth.firstName,
+        )
+
+        expect(
+          response.body.data.lastName,
+        ).toBe(
+          auth.lastName,
         )
 
         expect(
