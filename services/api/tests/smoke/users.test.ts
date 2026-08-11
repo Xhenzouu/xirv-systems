@@ -52,6 +52,7 @@ describe("User Smoke Tests", () => {
       .send({
         firstName: "Updated",
         lastName: "Profile",
+        email: testEmail, // REQUIRED: include email
       })
 
     expect(response.status).toBe(200)

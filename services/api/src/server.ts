@@ -2,17 +2,17 @@ import dotenv from "dotenv"
 import path from "path"
 import { fileURLToPath } from "url"
 
-// Load the correct env file based on NODE_ENV
+// Get the directory name
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const envFile = process.env.NODE_ENV === "production" 
-  ? ".env.production" 
-  : ".env"
-
+// Load .env file explicitly
 dotenv.config({
-  path: path.resolve(__dirname, "..", envFile),
+  path: path.resolve(__dirname, "..", ".env"),
 })
+
+console.log("Loaded .env file from:", path.resolve(__dirname, "..", ".env"))
+console.log("JWT_ACCESS_SECRET exists:", !!process.env.JWT_ACCESS_SECRET)
 
 import { validateEnv } from "./config/validate-env.js"
 

@@ -42,6 +42,7 @@ describe(
             .send({
               firstName: "Updated",
               lastName: "Name",
+              email: auth.email, // REQUIRED: include email
             })
 
         expect(

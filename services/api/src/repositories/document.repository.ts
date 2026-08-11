@@ -42,7 +42,8 @@ export async function findDocumentById(id: string) {
       user: {
         select: {
           id: true,
-          fullName: true,
+          firstName: true,  // Changed from fullName
+          lastName: true,   // Added lastName
           email: true,
         },
       },

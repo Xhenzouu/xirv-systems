@@ -112,13 +112,18 @@ function getDetails(req: Request, body: any): Record<string, any> | undefined {
 
   // For register, don't log password
   if (req.path === "/api/v1/auth/register") {
-    return { email: req.body?.email, fullName: req.body?.fullName }
+    return { 
+      email: req.body?.email, 
+      firstName: req.body?.firstName,
+      lastName: req.body?.lastName,
+    }
   }
 
   // For profile update, log what changed
   if (req.path === "/api/v1/users/profile" && req.method === "PATCH") {
     const changes: Record<string, any> = {}
-    if (req.body.fullName) changes.fullName = req.body.fullName
+    if (req.body.firstName) changes.firstName = req.body.firstName
+    if (req.body.lastName) changes.lastName = req.body.lastName
     if (req.body.email) changes.email = req.body.email
     return changes
   }

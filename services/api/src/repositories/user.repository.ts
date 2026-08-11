@@ -56,7 +56,8 @@ export async function findAllUsers() {
   return prisma.user.findMany({
     select: {
       id: true,
-      fullName: true,
+      firstName: true,  // Changed from fullName
+      lastName: true,   // Added lastName
       email: true,
       role: true,
       createdAt: true,
