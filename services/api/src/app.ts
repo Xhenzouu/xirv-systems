@@ -4,6 +4,7 @@ import helmet from "helmet"
 import compression from "compression"
 
 import routes from "./routes/index.js"
+import cacheTestRoutes from "./routes/cache-test.routes.js"  // ✅ Already imported
 
 import {
   errorHandler,
@@ -35,7 +36,7 @@ const helmetConfig = helmet({
     },
   },
   hsts: {
-    maxAge: 31536000, // 1 year
+    maxAge: 31536000,
     includeSubDomains: true,
     preload: true,
   },
@@ -46,26 +47,22 @@ const helmetConfig = helmet({
 
 app.use(helmetConfig)
 
-// Security middleware
 app.use(helmet())
 app.use(compression())
 app.use(requestId)
-app.use(cors(corsOptions))  // 👈 Use the configured CORS
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(httpLogger)
 
-// Apply global rate limiting
 if (globalLimiter) {
   app.use(globalLimiter)
 }
 
-// Routes
 app.use("/", routes)
 
-// Audit logging
+app.use("/api/v1/cache-test", cacheTestRoutes)
 app.use(auditLog)
 
-// Error handling
 app.use(notFound)
 app.use(errorHandler)
 
