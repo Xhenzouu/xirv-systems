@@ -14,6 +14,8 @@ import {
   findTagByName,
 } from "../repositories/tag.repository.js"
 
+import { getRedisValue, setRedisValue, deleteRedisPattern } from "../services/redis.service.js"
+
 export async function createTagController(
   req: Request,
   res: Response,
@@ -39,6 +41,8 @@ export async function createTagController(
 
     const tag = await createTag(name)
 
+    await deleteRedisPattern(`tags:list:*`)
+
     return created(
       res,
       tag,
@@ -57,7 +61,6 @@ export async function getTag(
   try {
     const { id } = req.params
 
-    // Ensure id is a string
     const tagId = typeof id === "string" ? id : id[0]
 
     const tag = await findTagById(tagId)
@@ -82,7 +85,16 @@ export async function listTags(
   next: NextFunction,
 ) {
   try {
+    const cacheKey = `tags:list:all`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "Tags retrieved successfully (cached)")
+    }
+
     const tags = await findAllTags()
+
+    await setRedisValue(cacheKey, tags, 300)
 
     return ok(
       res,
@@ -109,7 +121,6 @@ export async function updateTagController(
     const { id } = req.params
     const { name } = req.body
 
-    // Ensure id is a string
     const tagId = typeof id === "string" ? id : id[0]
 
     const existing = await findTagById(tagId)
@@ -119,6 +130,8 @@ export async function updateTagController(
     }
 
     const updated = await updateTag(tagId, name)
+
+    await deleteRedisPattern(`tags:list:*`)
 
     return ok(
       res,
@@ -144,7 +157,6 @@ export async function deleteTagController(
 
     const { id } = req.params
 
-    // Ensure id is a string
     const tagId = typeof id === "string" ? id : id[0]
 
     const existing = await findTagById(tagId)
@@ -154,6 +166,8 @@ export async function deleteTagController(
     }
 
     await deleteTag(tagId)
+
+    await deleteRedisPattern(`tags:list:*`)
 
     return ok(
       res,

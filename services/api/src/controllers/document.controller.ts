@@ -22,6 +22,8 @@ import { saveFile,
 
  import fs from "fs/promises"
 
+import { getRedisValue, setRedisValue, deleteRedisPattern } from "../services/redis.service.js"
+
 export async function uploadDocument(
   req: Request,
   res: Response,
@@ -42,7 +44,6 @@ export async function uploadDocument(
       throw new ApiError(400, "Title is required.")
     }
 
-    // Save file to disk
     const fileData = await saveFile({
       originalname: file.originalname,
       buffer: file.buffer,
@@ -50,7 +51,6 @@ export async function uploadDocument(
       size: file.size,
     })
 
-    // Extract text content from the file
     let content: string | undefined = undefined
       try {
         if (file.mimetype === "text/plain" || file.originalname.endsWith(".txt")) {
@@ -60,7 +60,6 @@ export async function uploadDocument(
         console.error("Error extracting text content:", error)
       }
 
-    // Create document
     const document = await createDocumentService(
       user.id,
       {
@@ -70,7 +69,7 @@ export async function uploadDocument(
         filePath: fileData.filePath,
         fileSize: fileData.fileSize,
         mimeType: fileData.mimeType,
-        content,  // Pass the extracted content
+        content,
         categoryId,
       },
     )
@@ -79,7 +78,6 @@ export async function uploadDocument(
       throw new ApiError(500, "Failed to create document.")
     }
 
-    // Add tags if provided
     if (tags) {
       const tagList = typeof tags === "string" ? tags.split(",").map((t: string) => t.trim()) : tags
       for (const tagName of tagList) {
@@ -88,6 +86,8 @@ export async function uploadDocument(
         }
       }
     }
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return created(
       res,
@@ -109,7 +109,6 @@ export async function getDocument(
     const user = requireUser(req)
     const { id } = req.params
 
-    // Ensure id is a string
     const documentId = typeof id === "string" ? id : id[0]
 
     const document = await getDocumentService(documentId)
@@ -118,7 +117,6 @@ export async function getDocument(
       throw new ApiError(404, "Document not found.")
     }
 
-    // Check ownership
     if (document.userId !== user.id && user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       throw new ApiError(403, "Access denied.")
     }
@@ -150,6 +148,13 @@ export async function listDocuments(
       offset,
     } = req.query
 
+    const cacheKey = `documents:list:${user.id}:${status || 'all'}:${categoryId || 'none'}:${tagId || 'none'}:${search || 'none'}:${limit || 20}:${offset || 0}`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "Documents retrieved successfully (cached)")
+    }
+
     const result = await getDocumentsService(
       user.id,
       {
@@ -161,6 +166,8 @@ export async function listDocuments(
         offset: offset ? parseInt(offset as string) : undefined,
       },
     )
+
+    await setRedisValue(cacheKey, result, 300)
 
     return ok(
       res,
@@ -182,7 +189,6 @@ export async function updateDocument(
     const { id } = req.params
     const { title, description, categoryId } = req.body
 
-    // Ensure id is a string
     const documentId = typeof id === "string" ? id : id[0]
 
     const document = await getDocumentService(documentId)
@@ -200,6 +206,8 @@ export async function updateDocument(
       description,
       categoryId,
     })
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return ok(
       res,
@@ -220,7 +228,6 @@ export async function deleteDocument(
     const user = requireUser(req)
     const { id } = req.params
 
-    // Ensure id is a string
     const documentId = typeof id === "string" ? id : id[0]
 
     const document = await getDocumentService(documentId)
@@ -233,10 +240,11 @@ export async function deleteDocument(
       throw new ApiError(403, "Access denied.")
     }
 
-    // Delete file from disk
     await deleteFile(document.filePath)
 
     await deleteDocumentService(documentId)
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return ok(
       res,
@@ -260,10 +268,8 @@ export async function updateDocumentStatus(
 
     console.log("updateDocumentStatus called with:", { id, status, userId: user.id })
 
-    // Ensure id is a string
     const documentId = typeof id === "string" ? id : id[0]
 
-    // Get the document first
     const document = await getDocumentService(documentId)
 
     console.log("Document found:", document)
@@ -272,15 +278,15 @@ export async function updateDocumentStatus(
       throw new ApiError(404, "Document not found.")
     }
 
-    // Check ownership
     if (document.userId !== user.id && user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       throw new ApiError(403, "Access denied.")
     }
 
-    // Update the status
     const updated = await updateDocumentStatusService(documentId, status)
 
     console.log("Document updated:", updated)
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return ok(
       res,
@@ -307,7 +313,6 @@ export async function addTag(
       throw new ApiError(400, "Tag name is required.")
     }
 
-    // Ensure id is a string
     const documentId = typeof id === "string" ? id : id[0]
 
     const document = await getDocumentService(documentId)
@@ -321,6 +326,8 @@ export async function addTag(
     }
 
     const updated = await addTagToDocumentService(documentId, tag)
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return ok(
       res,
@@ -341,7 +348,6 @@ export async function removeTag(
     const user = requireUser(req)
     const { id, tagId } = req.params
 
-    // Ensure ids are strings
     const documentId = typeof id === "string" ? id : id[0]
     const tagIdStr = typeof tagId === "string" ? tagId : tagId[0]
 
@@ -356,6 +362,8 @@ export async function removeTag(
     }
 
     const updated = await removeTagFromDocumentService(documentId, tagIdStr)
+
+    await deleteRedisPattern(`documents:list:*`)
 
     return ok(
       res,

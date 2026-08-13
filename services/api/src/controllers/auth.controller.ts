@@ -16,6 +16,8 @@ import {
   ok,
 } from "../utils/response.js"
 
+import { deleteRedisPattern } from "../services/redis.service.js"
+
 /**
  * @swagger
  * /auth/register:
@@ -87,6 +89,8 @@ export async function register(
       email,
       password,
     )
+
+    await deleteRedisPattern(`admin:users:*`)
 
     return created(
       res,

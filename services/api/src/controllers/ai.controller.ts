@@ -4,6 +4,7 @@ import { requireUser } from "../utils/require-user.js"
 import { ok } from "../utils/response.js"
 import { ApiError } from "../errors/ApiError.js"
 import { chat, chatStream } from "../services/ai.service.js"
+import { getRedisValue, setRedisValue } from "../services/redis.service.js"
 
 export async function chatCompletion(
   req: Request,
@@ -19,12 +20,21 @@ export async function chatCompletion(
       throw new ApiError(400, "Messages array is required")
     }
 
+    const cacheKey = `ai:chat:${user.id}:${JSON.stringify(messages)}:${model || 'default'}:${temperature || 0.7}`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "AI response generated successfully (cached)")
+    }
+
     const result = await chat({
       messages,
       model,
       temperature,
       maxTokens,
     })
+
+    await setRedisValue(cacheKey, result, 3600)
 
     return ok(res, result, "AI response generated successfully.")
   } catch (error) {
@@ -46,7 +56,6 @@ export async function chatCompletionStream(
       throw new ApiError(400, "Messages array is required")
     }
 
-    // Set up SSE headers
     res.setHeader("Content-Type", "text/event-stream")
     res.setHeader("Cache-Control", "no-cache")
     res.setHeader("Connection", "keep-alive")
@@ -59,7 +68,6 @@ export async function chatCompletionStream(
       maxTokens,
     })
 
-    // Stream the response
     for await (const chunk of stream) {
       res.write(`data: ${JSON.stringify({ content: chunk })}\n\n`)
     }

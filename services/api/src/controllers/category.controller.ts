@@ -14,6 +14,8 @@ import {
   findCategoryByName,
 } from "../repositories/category.repository.js"
 
+import { getRedisValue, setRedisValue, deleteRedisPattern } from "../services/redis.service.js"
+
 export async function createCategoryController(
   req: Request,
   res: Response,
@@ -22,7 +24,6 @@ export async function createCategoryController(
   try {
     const user = requireUser(req)
 
-    // Only ADMIN and SUPER_ADMIN can create categories
     if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       throw new ApiError(403, "Access denied.")
     }
@@ -39,6 +40,8 @@ export async function createCategoryController(
     }
 
     const category = await createCategory(name, description)
+
+    await deleteRedisPattern(`categories:list:*`)
 
     return created(
       res,
@@ -58,7 +61,6 @@ export async function getCategory(
   try {
     const { id } = req.params
 
-    // Ensure id is a string
     const categoryId = typeof id === "string" ? id : id[0]
 
     const category = await findCategoryById(categoryId)
@@ -83,7 +85,16 @@ export async function listCategories(
   next: NextFunction,
 ) {
   try {
+    const cacheKey = `categories:list:all`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "Categories retrieved successfully (cached)")
+    }
+
     const categories = await findAllCategories()
+
+    await setRedisValue(cacheKey, categories, 300)
 
     return ok(
       res,
@@ -110,7 +121,6 @@ export async function updateCategoryController(
     const { id } = req.params
     const { name, description } = req.body
 
-    // Ensure id is a string
     const categoryId = typeof id === "string" ? id : id[0]
 
     const existing = await findCategoryById(categoryId)
@@ -120,6 +130,8 @@ export async function updateCategoryController(
     }
 
     const updated = await updateCategory(categoryId, name, description)
+
+    await deleteRedisPattern(`categories:list:*`)
 
     return ok(
       res,
@@ -145,7 +157,6 @@ export async function deleteCategoryController(
 
     const { id } = req.params
 
-    // Ensure id is a string
     const categoryId = typeof id === "string" ? id : id[0]
 
     const existing = await findCategoryById(categoryId)
@@ -155,6 +166,8 @@ export async function deleteCategoryController(
     }
 
     await deleteCategory(categoryId)
+
+    await deleteRedisPattern(`categories:list:*`)
 
     return ok(
       res,

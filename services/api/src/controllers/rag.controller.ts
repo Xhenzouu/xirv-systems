@@ -5,6 +5,7 @@ import { ok } from "../utils/response.js"
 import { ApiError } from "../errors/ApiError.js"
 import { ragQuery } from "../services/rag.service.js"
 import { getDocumentService, processDocumentForRAG } from "../services/documents/document.service.js"
+import { getRedisValue, setRedisValue, deleteRedisPattern } from "../services/redis.service.js"
 
 export async function processDocument(
   req: Request,
@@ -15,7 +16,6 @@ export async function processDocument(
     const user = requireUser(req)
     const { documentId } = req.params
 
-    // Ensure documentId is a string
     const docId = typeof documentId === "string" ? documentId : documentId[0]
 
     console.log("[DEBUG] processDocument called with:", { documentId: docId, userId: user.id })
@@ -30,8 +30,9 @@ export async function processDocument(
       throw new ApiError(403, "Access denied.")
     }
 
-    // Process document for RAG
     const result = await processDocumentForRAG(docId)
+
+    await deleteRedisPattern(`rag:query:*`)
 
     return ok(res, result, "Document processed for RAG successfully.")
   } catch (error) {
@@ -54,8 +55,14 @@ export async function ragChat(
       throw new ApiError(400, "Question is required.")
     }
 
-    // Ensure documentId is a string if provided
     const docId = documentId ? (typeof documentId === "string" ? documentId : documentId[0]) : undefined
+
+    const cacheKey = `rag:query:${user.id}:${question.trim()}:${docId || 'none'}:${model || 'default'}`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "RAG response generated successfully (cached)")
+    }
 
     const result = await ragQuery({
       question: question.trim(),
@@ -64,6 +71,8 @@ export async function ragChat(
       temperature,
       maxTokens,
     })
+
+    await setRedisValue(cacheKey, result, 3600)
 
     return ok(res, result, "RAG response generated successfully.")
   } catch (error) {
@@ -85,7 +94,6 @@ export async function ragChatStream(
       throw new ApiError(400, "Question is required.")
     }
 
-    // Ensure documentId is a string if provided
     const docId = documentId ? (typeof documentId === "string" ? documentId : documentId[0]) : undefined
 
     const result = await ragQuery({
@@ -96,23 +104,19 @@ export async function ragChatStream(
       maxTokens,
     })
 
-    // Set up SSE headers
     res.setHeader("Content-Type", "text/event-stream")
     res.setHeader("Cache-Control", "no-cache")
     res.setHeader("Connection", "keep-alive")
     res.setHeader("X-Request-Id", req.requestId || "")
 
-    // Stream the answer
     const answer = result.answer
     const words = answer.split(" ")
 
     for (const word of words) {
       res.write(`data: ${JSON.stringify({ content: word + " " })}\n\n`)
-      // Simulate streaming delay
       await new Promise((resolve) => setTimeout(resolve, 10))
     }
 
-    // Send sources at the end
     res.write(`data: ${JSON.stringify({ 
       sources: result.sources,
       usage: result.usage,

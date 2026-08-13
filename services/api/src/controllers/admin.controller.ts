@@ -17,12 +17,22 @@ import {
   changeUserRole,
 } from "../services/admin.service.js"
 
+import { getRedisValue, setRedisValue, deleteRedisPattern, deleteRedisValue } from "../services/redis.service.js"
+
 export async function users(
   _req: Request,
   res: Response,
 ) {
-  const result =
-    await getAllUsers()
+  const cacheKey = `admin:users:all`
+
+  const cachedData = await getRedisValue(cacheKey)
+  if (cachedData) {
+    return ok(res, cachedData, "Users retrieved successfully (cached)")
+  }
+
+  const result = await getAllUsers()
+
+  await setRedisValue(cacheKey, result, 300)
 
   return ok(
     res,
@@ -35,10 +45,18 @@ export async function user(
   req: Request,
   res: Response,
 ) {
-  const result =
-    await getUser(
-      String(req.params.id),
-    )
+  const userId = String(req.params.id)
+
+  const cacheKey = `admin:user:${userId}`
+
+  const cachedData = await getRedisValue(cacheKey)
+  if (cachedData) {
+    return ok(res, cachedData, "User retrieved successfully (cached)")
+  }
+
+  const result = await getUser(userId)
+
+  await setRedisValue(cacheKey, result, 300)
 
   return ok(
     res,
@@ -51,20 +69,23 @@ export async function updateRole(
   req: Request,
   res: Response,
 ) {
-  const actor =
-    requireUser(req)
+  const actor = requireUser(req)
 
   const {
     role,
   } = req.body
 
-  const result =
-    await changeUserRole(
-      actor.id,
-      actor.role,
-      String(req.params.id),
-      role,
-    )
+  const userId = String(req.params.id)
+
+  const result = await changeUserRole(
+    actor.id,
+    actor.role,
+    userId,
+    role,
+  )
+
+  await deleteRedisPattern(`admin:users:*`)
+  await deleteRedisValue(`admin:user:${userId}`)
 
   return ok(
     res,

@@ -19,29 +19,38 @@ import {
   requireUser,
 } from "../utils/require-user.js"
 
+import { getRedisValue, setRedisValue, deleteRedisValue } from "../services/redis.service.js"
+
 export async function profile(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const authUser =
-      requireUser(req)
+    const authUser = requireUser(req)
 
-    const user =
-      await getUserById(
-        authUser.id,
-      )
+    const cacheKey = `user:profile:${authUser.id}`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "Profile retrieved successfully (cached)")
+    }
+
+    const user = await getUserById(authUser.id)
+
+    const profileData = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    }
+
+    await setRedisValue(cacheKey, profileData, 3600)
 
     return ok(
       res,
-      {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-      },
+      profileData,
       "Profile retrieved successfully.",
     )
   } catch (error) {
@@ -53,8 +62,7 @@ export function adminTest(
   req: Request,
   res: Response,
 ) {
-  const user =
-    requireUser(req)
+  const user = requireUser(req)
 
   return ok(
     res,
@@ -70,8 +78,7 @@ export async function update(
   req: Request,
   res: Response,
 ) {
-  const user =
-    requireUser(req)
+  const user = requireUser(req)
 
   const {
     firstName,
@@ -79,13 +86,14 @@ export async function update(
     email,
   } = req.body
 
-  const updated =
-    await updateProfile(
-      user.id,
-      firstName,
-      lastName,
-      email,
-    )
+  const updated = await updateProfile(
+    user.id,
+    firstName,
+    lastName,
+    email,
+  )
+
+  await deleteRedisValue(`user:profile:${user.id}`)
 
   return ok(
     res,
@@ -104,8 +112,7 @@ export async function updatePassword(
   req: Request,
   res: Response,
 ) {
-  const user =
-    requireUser(req)
+  const user = requireUser(req)
 
   const {
     currentPassword,
@@ -118,6 +125,8 @@ export async function updatePassword(
     newPassword,
   )
 
+  await deleteRedisValue(`user:profile:${user.id}`)
+
   return ok(
     res,
     null,
@@ -129,8 +138,7 @@ export async function removeAccount(
   req: Request,
   res: Response,
 ) {
-  const user =
-    requireUser(req)
+  const user = requireUser(req)
 
   const {
     password,
@@ -140,6 +148,8 @@ export async function removeAccount(
     user.id,
     password,
   )
+
+  await deleteRedisValue(`user:profile:${user.id}`)
 
   return ok(
     res,
