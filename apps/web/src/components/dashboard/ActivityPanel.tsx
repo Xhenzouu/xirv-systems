@@ -1,5 +1,7 @@
 import Panel from "../ui/Panel"
 import { dashboardActivity } from "../../services/dashboard"
+import { Activity, Clock } from 'lucide-react'
+import "./ActivityPanel.css"
 
 function ActivityPanel() {
   return (
@@ -7,8 +9,16 @@ function ActivityPanel() {
       <ul className="activity-list">
         {dashboardActivity.map((activity) => (
           <li key={activity.id}>
-            <strong>{activity.message}</strong>
-            <span>{activity.time}</span>
+            <div className="activity-icon">
+              <Activity size={16} />
+            </div>
+            <div className="activity-content">
+              <strong>{activity.message}</strong>
+              <span className="activity-time">
+                <Clock size={12} />
+                {activity.time}
+              </span>
+            </div>
           </li>
         ))}
       </ul>

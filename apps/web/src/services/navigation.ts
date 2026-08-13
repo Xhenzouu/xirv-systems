@@ -14,6 +14,10 @@ export const navigationItems: NavigationItem[] = [
     path: "/knowledge",
   },
   {
+    label: "Workflows",
+    path: "/workflows",
+  },
+  {
     label: "Analytics",
     path: "/analytics",
   },

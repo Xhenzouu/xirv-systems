@@ -1,0 +1,131 @@
+/* DeleteWorkflowModal.css - Light Theme */
+
+.xirv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.xirv-modal {
+  background: #FFFFFF;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.25s ease;
+}
+
+.xirv-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.xirv-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #DC2626;
+}
+
+.xirv-modal-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.xirv-modal-close:hover {
+  color: #0F172A;
+}
+
+.xirv-modal-body {
+  text-align: center;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.xirv-modal-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.xirv-modal-icon svg {
+  color: #DC2626;
+}
+
+.xirv-modal-body p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.xirv-modal-hint {
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.xirv-modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.xirv-modal-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.xirv-modal-btn-danger {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+.xirv-modal-btn-danger:hover:not(:disabled) {
+  background: #B91C1C;
+}
+.xirv-modal-btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.xirv-modal-btn-secondary {
+  background: #F1F5F9;
+  color: #475569;
+}
+.xirv-modal-btn-secondary:hover:not(:disabled) {
+  background: #E2E8F0;
+}
+.xirv-modal-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

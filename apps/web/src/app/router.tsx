@@ -14,6 +14,11 @@ import Login from "../pages/Login"
 import Register from "../pages/Register"
 import ForgotPassword from "../pages/ForgotPassword"
 
+import WorkflowsList from "../pages/workflows"
+import CreateWorkflow from "../pages/workflows/create"
+import WorkflowDetail from "../pages/workflows/[id]"
+import TaskBoard from "../pages/workflows/tasks"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,6 +74,22 @@ const router = createBrowserRouter([
       {
         path: "/knowledge",
         element: <Knowledge />,
+      },
+      {
+        path: "/workflows",
+        element: <WorkflowsList />,
+      },
+      {
+        path: "/workflows/create",
+        element: <CreateWorkflow />,
+      },
+      {
+        path: "/workflows/:id",
+        element: <WorkflowDetail />,
+      },
+      {
+        path: "/workflows/tasks",
+        element: <TaskBoard />,
       },
       {
         path: "/analytics",

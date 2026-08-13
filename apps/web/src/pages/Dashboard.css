@@ -45,6 +45,32 @@
   gap: var(--space-lg);
 }
 
+/* Metric Card Styles */
+.metric-card-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--background-primary);
+  border-radius: 50%;
+  color: var(--xirv-accent);
+  flex-shrink: 0;
+}
+
+.metric-card-content h2 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 @media (max-width: 900px) {
   .dashboard-metrics {
     grid-template-columns: 1fr;
@@ -64,5 +90,10 @@
     font-size: var(--text-lg);
     flex-direction: column;
     gap: 0;
+  }
+
+  .metric-card-content {
+    flex-direction: column;
+    text-align: center;
   }
 }

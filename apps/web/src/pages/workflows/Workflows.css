@@ -1,0 +1,496 @@
+/* Workflows.css - Light Theme */
+
+/* ===== Page Layout ===== */
+.xirv-workflows-page {
+  padding: var(--space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.xirv-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.xirv-page-header h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.xirv-page-subtitle {
+  color: var(--text-secondary);
+  margin: var(--space-xs) 0 0 0;
+  font-size: var(--text-sm);
+}
+
+.xirv-header-actions {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ===== Buttons ===== */
+.xirv-btn-primary {
+  background: var(--xirv-accent);
+  color: var(--xirv-primary);
+  border: none;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--text-sm);
+}
+.xirv-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
+}
+.xirv-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.xirv-btn-secondary {
+  background: var(--background-primary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--text-sm);
+}
+.xirv-btn-secondary:hover {
+  background: var(--surface);
+  border-color: var(--text-secondary);
+}
+
+.xirv-btn-danger {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--status-error);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--text-sm);
+}
+.xirv-btn-danger:hover {
+  background: rgba(220, 38, 38, 0.2);
+}
+
+/* ===== Status Badges ===== */
+.xirv-status-badge {
+  padding: 2px var(--space-sm);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+.xirv-status-draft { background: #fef3c7; color: #92400e; }
+.xirv-status-active { background: #d1fae5; color: #065f46; }
+.xirv-status-paused { background: #fef3c7; color: #92400e; }
+.xirv-status-archived { background: #f3f4f6; color: #4b5563; }
+.xirv-status-pending { background: #fef3c7; color: #92400e; }
+.xirv-status-running { background: #dbeafe; color: #1e40af; }
+.xirv-status-completed { background: #d1fae5; color: #065f46; }
+.xirv-status-failed { background: #fee2e2; color: #991b1b; }
+.xirv-status-cancelled { background: #f3f4f6; color: #4b5563; }
+.xirv-status-in_progress { background: #dbeafe; color: #1e40af; }
+.xirv-status-blocked { background: #fee2e2; color: #991b1b; }
+
+/* ===== Workflow Cards ===== */
+.xirv-workflow-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.xirv-workflow-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: all 0.3s ease;
+}
+.xirv-workflow-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-workflow-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.xirv-workflow-info h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+.xirv-workflow-info h3 a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.xirv-workflow-info h3 a:hover {
+  color: var(--xirv-accent);
+}
+.xirv-workflow-info p {
+  margin: var(--space-xs) 0 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.xirv-workflow-actions {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.xirv-workflow-card-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: var(--space-lg);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.xirv-template-badge {
+  background: var(--background-primary);
+  color: var(--text-secondary);
+  padding: 1px var(--space-sm);
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+/* ===== Empty State ===== */
+.xirv-empty-state {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+}
+.xirv-empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+}
+.xirv-empty-state h3 {
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--text-lg);
+}
+.xirv-empty-state p {
+  margin: 0;
+  max-width: 400px;
+  margin-inline: auto;
+  font-size: var(--text-sm);
+}
+
+/* ===== Loading & Error ===== */
+.xirv-loading {
+  text-align: center;
+  padding: var(--space-xl) 0;
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+}
+.xirv-error {
+  text-align: center;
+  padding: var(--space-lg);
+  color: var(--status-error);
+  background: rgba(220, 38, 38, 0.05);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(220, 38, 38, 0.1);
+}
+.xirv-error button {
+  margin-top: var(--space-md);
+}
+
+/* ===== Create Workflow Form ===== */
+.xirv-workflow-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.xirv-form-group {
+  margin-bottom: var(--space-lg);
+}
+.xirv-form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+}
+.xirv-form-group label .required {
+  color: var(--status-error);
+}
+
+.xirv-form-input,
+.xirv-form-select,
+.xirv-form-textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+.xirv-form-input:focus,
+.xirv-form-select:focus,
+.xirv-form-textarea:focus {
+  outline: none;
+  border-color: var(--xirv-accent);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+}
+.xirv-form-textarea {
+  resize: vertical;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.xirv-json-editor {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--text-sm);
+}
+.xirv-json-error {
+  border-color: var(--status-error);
+}
+
+.xirv-form-error {
+  color: var(--status-error);
+  font-size: var(--text-sm);
+  margin-top: var(--space-xs);
+}
+.xirv-form-help {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin-top: var(--space-xs);
+}
+
+.xirv-form-actions {
+  margin-top: var(--space-xl);
+}
+
+/* ===== Detail Page ===== */
+.xirv-workflow-detail {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.xirv-detail-section {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-color);
+}
+.xirv-detail-section:last-child {
+  border-bottom: none;
+}
+.xirv-detail-section h3 {
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md) 0;
+  font-weight: 600;
+}
+
+.xirv-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+@media (max-width: 640px) {
+  .xirv-detail-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
+.xirv-detail-section dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-xs) var(--space-md);
+  margin: 0;
+}
+.xirv-detail-section dt {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: var(--text-sm);
+}
+.xirv-detail-section dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+}
+
+.xirv-json-viewer {
+  background: var(--background-primary);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  margin: 0;
+  border: 1px solid var(--border-color);
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* ===== Table ===== */
+.xirv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.xirv-table th {
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--text-sm);
+}
+.xirv-table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+.xirv-table tr:hover td {
+  background: var(--background-primary);
+}
+
+/* ===== Task Board ===== */
+.xirv-filter-group {
+  display: flex;
+  gap: 4px;
+  background: var(--background-primary);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+.xirv-filter-group button {
+  background: none;
+  border: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  transition: all 0.2s ease;
+}
+.xirv-filter-group button:hover {
+  color: var(--text-primary);
+}
+.xirv-filter-active {
+  background: var(--surface);
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-md);
+}
+
+.xirv-task-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: all 0.3s ease;
+}
+.xirv-task-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+.xirv-task-card-header h3 {
+  margin: 0;
+  font-size: var(--text-md);
+  color: var(--text-primary);
+}
+.xirv-task-workflow {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-priority-badge {
+  padding: 1px var(--space-sm);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.xirv-priority-1 { background: #d1fae5; color: #065f46; }
+.xirv-priority-2 { background: #dbeafe; color: #1e40af; }
+.xirv-priority-3 { background: #fef3c7; color: #92400e; }
+.xirv-priority-4 { background: #fed7aa; color: #9a3412; }
+.xirv-priority-5 { background: #fee2e2; color: #991b1b; }
+
+.xirv-task-description {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin: var(--space-sm) 0;
+}
+
+.xirv-task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  margin: var(--space-sm) 0;
+  font-size: var(--text-sm);
+}
+.xirv-task-due { color: var(--text-secondary); }
+.xirv-task-assignee { color: var(--text-secondary); }
+
+.xirv-task-approvals {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-sm) 0;
+  padding: var(--space-sm);
+  background: var(--background-primary);
+  border-radius: var(--radius-sm);
+}
+.xirv-approval-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-task-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+}

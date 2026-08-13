@@ -1,51 +1,41 @@
 .quick-actions {
-
   margin-top: var(--space-xl);
-
 }
 
 .quick-actions h2 {
-
   margin-bottom: var(--space-lg);
-
+  color: var(--text-primary);
 }
 
 .quick-actions-grid {
-
   display: grid;
-
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-
   gap: var(--space-lg);
-
 }
 
 .quick-actions-grid button {
-
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
   padding: var(--space-lg);
-
   border: 1px solid var(--border-color);
-
   border-radius: var(--radius-lg);
-
   background: var(--surface);
-
   color: var(--text-primary);
-
   cursor: pointer;
-
   font-size: 1rem;
-
+  font-weight: 500;
   text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
-  transition: transform 0.2s ease, border-color 0.2s ease;
-
+.quick-actions-grid button svg {
+  flex-shrink: 0;
+  color: var(--xirv-accent);
 }
 
 .quick-actions-grid button:hover {
-
   transform: translateY(-2px);
-
-  border-color: var(--xirv-primary);
-
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.1);
 }
