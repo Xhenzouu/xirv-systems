@@ -1,7 +1,7 @@
 # XIRV Systems Backend Changelog
 
 **Project:** XIRV Systems – Enterprise Intelligence Platform
-**Document Version:** 1.0
+**Document Version:** 1.1
 **Status:** Active
 **Last Updated:** August 2026
 
@@ -203,30 +203,150 @@ This release significantly improved maintainability and established a predictabl
 
 ---
 
-# Version 0.7.0 — Production Hardening (In Progress)
+# Version 0.7.0 — Knowledge Management
 
-**Status:** In Progress
+**Status:** Released
 
 ## Summary
 
-Preparing the backend for production deployment.
+Implemented document management and knowledge organization features.
 
-### Completed
+### Added
+
+* Document upload
+* Document retrieval
+* Document update
+* Document deletion
+* Category management
+* Tag management
+* Document tags association
+* Document status management
+* File storage
+
+### Notes
+
+Established the foundation for RAG and AI-powered search.
+
+---
+
+# Version 0.8.0 — AI Integration
+
+**Status:** Released
+
+## Summary
+
+Integrated AI capabilities with Ollama and OpenAI.
+
+### Added
+
+* AI Gateway abstraction
+* Chat completion
+* Chat streaming
+* Ollama provider
+* OpenAI provider
+* Embedding generation
+* Vector search with pgvector
+* RAG (Retrieval-Augmented Generation)
+* Document chunking
+* Source attribution
+
+### Notes
+
+AI features are provider-agnostic, allowing flexible model selection.
+
+---
+
+# Version 0.9.0 — Workflow Automation
+
+**Status:** Released
+
+## Summary
+
+Implemented workflow automation engine with task management and approvals.
+
+### Added
+
+* Workflow model
+* Workflow execution
+* Task management
+* Task assignment
+* Approval workflows
+* Workflow status management
+* Workflow execution history
+* Frontend workflow UI
+
+### Notes
+
+Workflows enable automated business processes with human-in-the-loop approvals.
+
+---
+
+# Version 1.0.0 — Redis Caching
+
+**Status:** Released
+
+## Summary
+
+Integrated Redis caching for improved performance and reduced database load.
+
+### Added
+
+* Redis service with ioredis
+* Redis connection management
+* Cache service implementation
+* Caching for workflows list endpoint
+* Caching for documents list endpoint
+* Caching for categories list endpoint
+* Caching for tags list endpoint
+* Caching for user profile endpoint
+* Caching for admin users list endpoint
+* Caching for AI chat responses
+* Caching for RAG query responses
+* Cache invalidation on write operations
+* Cache key isolation per user
+* Graceful fallback when Redis is unavailable
+
+### Changed
+
+* Controllers updated to support caching
+* Services updated for cache invalidation
+* Architecture documentation updated
+
+### Notes
+
+Redis caching significantly improves API response times and reduces database load.
+
+---
+
+# Version 0.10.0 — Production Hardening
+
+**Status:** Released
+
+## Summary
+
+Prepared the backend for production deployment.
+
+### Added
 
 * Helmet security headers
 * Response compression
 * Request correlation middleware
 * UUID request identifiers
-
-### In Progress
-
-* Request ID integration with logging
-
-### Planned
-
+* Request ID log correlation
 * Rate limiting
 * Audit logging
-* Production security review
+* Trusted proxy configuration
+* Production CORS policy
+* Environment validation
+* Production logging configuration
+* PM2 process management
+
+### Security
+
+* Security headers enforced.
+* Rate limiting protects against abuse.
+* Audit logging for all actions.
+* CORS properly configured for production.
 
 ---
 
@@ -242,6 +362,7 @@ Implemented:
 * Services
 * Repositories
 * Prisma
+* Cache Service
 
 Result:
 
@@ -274,6 +395,20 @@ Benefits:
 
 ---
 
+## Cache Service Architecture
+
+Redis caching implemented as a horizontal service layer.
+
+Benefits:
+
+* Controllers and Services can access cache
+* Graceful degradation when Redis is unavailable
+* Consistent cache key generation
+* Centralized cache invalidation
+* Isolation of cache logic from business logic
+
+---
+
 # Security Improvements
 
 Implemented
@@ -286,14 +421,16 @@ Implemented
 * Helmet
 * Centralized validation
 * Centralized error handling
-
-Planned
-
 * Rate limiting
 * Audit logging
 * Trusted proxy configuration
+
+Planned
+
 * Secure cookie strategy
 * Production monitoring
+* Secret rotation procedures
+* Dependency vulnerability scanning
 
 ---
 
@@ -305,12 +442,9 @@ Completed
 * Backend architecture
 * Backend engineering conventions
 * Backend changelog
-
-Planned
-
-* Backend database documentation
-* Backend API documentation
-* Backend security documentation
+* Backend database
+* Backend API
+* Backend security
 * Backend backlog
 
 ---
@@ -319,15 +453,15 @@ Planned
 
 Upcoming development priorities include:
 
-1. Request ID log correlation
-2. Rate limiting
-3. Audit logging
-4. Security hardening
-5. OpenAPI documentation
-6. Automated testing
-7. Docker support
-8. CI/CD pipeline
-9. AI Gateway implementation
+1. Organizations & Teams
+2. API versioning
+3. OpenAPI/Swagger documentation
+4. Docker support
+5. CI/CD pipeline
+6. Background job processing
+7. Redis-based rate limiting
+8. Redis Streams for event processing
+9. Billing integration
 
 ---
 
@@ -347,4 +481,4 @@ Routine bug fixes and minor code cleanups do not require changelog entries unles
 
 # Summary
 
-The XIRV Systems backend has evolved from a foundational Express application into a structured, layered, and production-oriented platform. This changelog provides a concise historical record of that evolution and should be maintained alongside the roadmap to preserve engineering context across future development.
+The XIRV Systems backend has evolved from a foundational Express application into a structured, layered, and production-oriented platform with Redis caching, workflow automation, and AI capabilities. This changelog provides a concise historical record of that evolution and should be maintained alongside the roadmap to preserve engineering context across future development.
