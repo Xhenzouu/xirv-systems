@@ -5,7 +5,8 @@ import { ok, created } from "../../utils/response.js"
 import { ApiError } from "../../errors/ApiError.js"
 import { WorkflowService } from "../../services/workflow/index.js"
 
-// Helper function to get string from query params
+import { getRedisValue, setRedisValue, deleteRedisPattern } from "../../services/redis.service.js"
+
 function getStringFromQuery(value: any): string | undefined {
   if (typeof value === "string") return value
   if (Array.isArray(value) && value.length > 0 && typeof value[0] === "string") return value[0]
@@ -39,6 +40,8 @@ export async function createWorkflow(
       isTemplate,
     })
 
+    await deleteRedisPattern(`workflows:list:*`)
+
     return created(res, workflow, "Workflow created successfully")
   } catch (error) {
     next(error)
@@ -54,7 +57,6 @@ export async function getWorkflow(
     const user = requireUser(req)
     const { id } = req.params
 
-    // Ensure id is a string
     const workflowId = typeof id === "string" ? id : id[0]
 
     const workflow = await WorkflowService.getWorkflow(workflowId)
@@ -81,6 +83,13 @@ export async function listWorkflows(
 
     const searchStr = getStringFromQuery(search)
 
+    const cacheKey = `workflows:list:${user.id}:${status || 'all'}:${searchStr || 'none'}:${limit || 20}:${offset || 0}`
+
+    const cachedData = await getRedisValue(cacheKey)
+    if (cachedData) {
+      return ok(res, cachedData, "Workflows retrieved successfully (cached)")
+    }
+
     const result = await WorkflowService.listWorkflows(
       user.id,
       {
@@ -90,6 +99,8 @@ export async function listWorkflows(
         offset: offset ? parseInt(offset as string) : undefined,
       },
     )
+
+    await setRedisValue(cacheKey, result, 300)
 
     return ok(res, result, "Workflows retrieved successfully")
   } catch (error) {
@@ -107,7 +118,6 @@ export async function updateWorkflow(
     const { id } = req.params
     const { name, description, triggerType, triggerConfig, definition } = req.body
 
-    // Ensure id is a string
     const workflowId = typeof id === "string" ? id : id[0]
 
     const workflow = await WorkflowService.getWorkflow(workflowId)
@@ -123,6 +133,8 @@ export async function updateWorkflow(
       triggerConfig,
       definition,
     })
+
+    await deleteRedisPattern(`workflows:list:*`)
 
     return ok(res, updated, "Workflow updated successfully")
   } catch (error) {
@@ -140,7 +152,6 @@ export async function updateWorkflowStatus(
     const { id } = req.params
     const { status } = req.body
 
-    // Ensure id is a string
     const workflowId = typeof id === "string" ? id : id[0]
 
     const workflow = await WorkflowService.getWorkflow(workflowId)
@@ -150,6 +161,8 @@ export async function updateWorkflowStatus(
     }
 
     const updated = await WorkflowService.updateWorkflowStatus(workflowId, status)
+
+    await deleteRedisPattern(`workflows:list:*`)
 
     return ok(res, updated, "Workflow status updated successfully")
   } catch (error) {
@@ -166,7 +179,6 @@ export async function deleteWorkflow(
     const user = requireUser(req)
     const { id } = req.params
 
-    // Ensure id is a string
     const workflowId = typeof id === "string" ? id : id[0]
 
     const workflow = await WorkflowService.getWorkflow(workflowId)
@@ -176,6 +188,8 @@ export async function deleteWorkflow(
     }
 
     await WorkflowService.deleteWorkflow(workflowId)
+
+    await deleteRedisPattern(`workflows:list:*`)
 
     return ok(res, null, "Workflow deleted successfully")
   } catch (error) {
