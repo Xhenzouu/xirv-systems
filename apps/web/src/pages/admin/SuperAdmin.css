@@ -1,0 +1,412 @@
+/* SUPER_ADMIN Dashboard */
+.xirv-super-admin {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.xirv-super-admin-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--xirv-primary), var(--xirv-accent));
+  color: white;
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-super-admin-hero h1 {
+  margin: 0 0 var(--space-sm) 0;
+  color: white;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.xirv-super-admin-hero p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.xirv-super-admin-hero > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.xirv-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.xirv-hero-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Stats Cards */
+.xirv-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.xirv-stat-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.xirv-stat-icon.users {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.xirv-stat-icon.logs {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.xirv-stat-icon.system {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.xirv-stat-icon.cache {
+  background: #fce4ec;
+  color: #dc2626;
+}
+
+.xirv-stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.xirv-stat-value {
+  display: block;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.xirv-stat-label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Section Title */
+.xirv-admin-section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+/* Quick Action Cards */
+.xirv-super-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.xirv-super-admin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.xirv-super-admin-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--xirv-accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.xirv-super-admin-card svg {
+  color: var(--xirv-accent);
+  margin-bottom: var(--space-md);
+}
+
+.xirv-super-admin-card h3 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.xirv-super-admin-card p {
+  margin: 0 0 var(--space-md) 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  flex: 1;
+}
+
+.xirv-card-action {
+  color: var(--xirv-accent);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: transform 0.2s ease;
+}
+
+.xirv-super-admin-card:hover .xirv-card-action {
+  transform: translateX(4px);
+}
+
+/* Loading */
+.xirv-loading {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .xirv-admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .xirv-super-admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .xirv-super-admin {
+    padding: var(--space-md);
+  }
+
+  .xirv-super-admin-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-lg);
+  }
+
+  .xirv-admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-super-admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-hero-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-stat-card {
+    padding: var(--space-md);
+  }
+}
+
+/* ===== SuperAdminSystem Specific Styles ===== */
+
+/* System Metrics Cards */
+.xirv-system-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-system-metric-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.xirv-system-metric-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-system-metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.xirv-system-metric-icon.status {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.xirv-system-metric-icon.uptime {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.xirv-system-metric-icon.node {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.xirv-system-metric-icon.env {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.xirv-system-metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.xirv-system-metric-label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.xirv-system-metric-value {
+  display: block;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.xirv-system-metric-value.healthy {
+  color: var(--status-active);
+}
+
+/* Memory Section */
+.xirv-system-memory-section {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+
+.xirv-system-memory-section h2 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+.xirv-system-memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.xirv-system-memory-card {
+  padding: var(--space-md);
+  background: var(--background-primary);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.xirv-system-memory-label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.xirv-system-memory-value {
+  display: block;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Timestamp */
+.xirv-system-timestamp {
+  text-align: right;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .xirv-system-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .xirv-system-memory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .xirv-system-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-system-memory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-system-metric-card {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-system-memory-card {
+    padding: var(--space-sm);
+  }
+
+  .xirv-system-memory-value {
+    font-size: var(--text-lg);
+  }
+}

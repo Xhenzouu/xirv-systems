@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import Brand from "../branding/Brand"
 import UserProfile from "../user/UserProfile"
 import "./Header.css"
@@ -9,8 +8,7 @@ function Header() {
       <Brand />
 
       <nav>
-        <Link to="/">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
+        {/* Navigation links removed */}
       </nav>
 
       <UserProfile />

@@ -1,21 +1,17 @@
 .xirv-brand {
   display: flex;
-
   align-items: baseline;
-
   gap: var(--space-xs);
-
   font-weight: 700;
 }
 
 .xirv-brand span {
   font-size: 22px;
-
   color: var(--xirv-accent);
 }
 
 .xirv-brand small {
-  color: white;
-
+  color: #FFFFFF;
   font-size: 14px;
+  opacity: 0.9;
 }

@@ -12,7 +12,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   user: User | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<User>
   register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -32,9 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const userData = await authApi.getProfile()
           setUser(userData)
           setAuthenticated(true)
+          // Also store user in localStorage for debugging
+          localStorage.setItem('user', JSON.stringify(userData))
         } catch {
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
+          localStorage.removeItem('user')
         }
       }
       setIsLoading(false)
@@ -42,12 +45,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth()
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     const data = await authApi.login({ email, password })
     localStorage.setItem('accessToken', data.accessToken)
     localStorage.setItem('refreshToken', data.refreshToken)
-    setUser(data.user)
+    
+    // Make sure user has the role
+    const userData = data.user
+    console.log('🔐 Login response user:', userData)
+    console.log('🔐 User role:', userData?.role)
+    
+    setUser(userData)
     setAuthenticated(true)
+    
+    // Store user in localStorage for persistence
+    localStorage.setItem('user', JSON.stringify(userData))
+    
+    return userData
   }
 
   const register = async (firstName: string, lastName: string, email: string, password: string) => {
@@ -66,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
+    localStorage.removeItem('user')
     setUser(null)
     setAuthenticated(false)
   }

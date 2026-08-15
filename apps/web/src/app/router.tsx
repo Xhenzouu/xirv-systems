@@ -19,6 +19,13 @@ import CreateWorkflow from "../pages/workflows/create"
 import WorkflowDetail from "../pages/workflows/[id]"
 import TaskBoard from "../pages/workflows/tasks"
 
+// SUPER_ADMIN Imports
+import SuperAdmin from '../pages/admin/SuperAdmin'
+import SuperAdminUsers from '../pages/admin/SuperAdminUsers'
+import SuperAdminAuditLogs from '../pages/admin/SuperAdminAuditLogs'
+import SuperAdminSystem from '../pages/admin/SuperAdminSystem'
+import SuperAdminCache from '../pages/admin/SuperAdminCache'
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -98,6 +105,27 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      // SUPER_ADMIN Routes
+      {
+        path: "/super-admin",
+        element: <SuperAdmin />,
+      },
+      {
+        path: "/super-admin/users",
+        element: <SuperAdminUsers />,
+      },
+      {
+        path: "/super-admin/audit-logs",
+        element: <SuperAdminAuditLogs />,
+      },
+      {
+        path: "/super-admin/system",
+        element: <SuperAdminSystem />,
+      },
+      {
+        path: "/super-admin/cache",
+        element: <SuperAdminCache />,
       },
     ],
   },

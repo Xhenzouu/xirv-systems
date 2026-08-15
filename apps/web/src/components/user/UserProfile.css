@@ -4,10 +4,11 @@
   gap: var(--space-sm);
 }
 
-.xirv-user-name {
+.xirv-user-profile .xirv-user-name {
   font-size: var(--text-sm);
   font-weight: 500;
-  color: white;
+  color: #FFFFFF !important;
+  opacity: 0.9;
 }
 
 .xirv-user-login {
@@ -24,7 +25,7 @@
 .xirv-user-logout {
   background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: white;
+  color: #FFFFFF;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -42,7 +43,7 @@
 
 /* Responsive */
 @media (max-width: 480px) {
-  .xirv-user-name {
+  .xirv-user-profile .xirv-user-name {
     font-size: 12px;
   }
 
