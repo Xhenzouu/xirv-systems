@@ -4,7 +4,8 @@ import helmet from "helmet"
 import compression from "compression"
 
 import routes from "./routes/index.js"
-import cacheTestRoutes from "./routes/cache-test.routes.js"  // ✅ Already imported
+import cacheTestRoutes from "./routes/cache-test.routes.js"
+import superAdminRoutes from "./routes/super-admin.routes.js"
 
 import {
   errorHandler,
@@ -61,6 +62,8 @@ if (globalLimiter) {
 app.use("/", routes)
 
 app.use("/api/v1/cache-test", cacheTestRoutes)
+app.use("/api/v1/admin/super", superAdminRoutes)
+
 app.use(auditLog)
 
 app.use(notFound)
