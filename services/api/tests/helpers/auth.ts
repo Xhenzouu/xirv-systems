@@ -1,5 +1,6 @@
 import { Role } from "@prisma/client"
 import { randomUUID } from "node:crypto"
+import bcrypt from "bcrypt"
 
 import { api } from "./app.js"
 import { prisma } from "./prisma.js"
@@ -10,20 +11,42 @@ async function createTestUserDirectly() {
   const firstName = "Test"
   const lastName = "User"
 
-  const response = await api
-    .post("/api/v1/auth/register")
-    .send({ firstName, lastName, email, password })
+  // First, check if user already exists (to avoid duplicate issues)
+  const existingUser = await prisma.user.findUnique({
+    where: { email }
+  })
 
-  if (response.status !== 201) {
-    throw new Error("Failed to create test user")
+  if (existingUser) {
+    return {
+      email: existingUser.email,
+      password,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
+      id: existingUser.id
+    }
   }
 
-  return { 
-    email, 
-    password, 
+  // Create user directly with proper fields
+  const hashedPassword = await bcrypt.hash(password, 10)
+  
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      role: Role.USER,
+      isEmailVerified: true,
+      emailVerifiedAt: new Date(),
+    }
+  })
+
+  return {
+    email,
+    password,
     firstName,
     lastName,
-    id: response.body.data.id 
+    id: user.id
   }
 }
 

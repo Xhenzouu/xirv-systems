@@ -13,6 +13,7 @@ import Settings from "../pages/Settings"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
 import ForgotPassword from "../pages/ForgotPassword"
+import VerifyEmail from "../pages/VerifyEmail"
 
 import WorkflowsList from "../pages/workflows"
 import CreateWorkflow from "../pages/workflows/create"
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
     ],
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
   },
   {
     element: <ProtectedRoute><AppShell /></ProtectedRoute>,

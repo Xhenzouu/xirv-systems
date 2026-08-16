@@ -17,6 +17,7 @@ export async function createUser(
   lastName: string,
   email: string,
   password: string,
+  verificationToken?: string,  // ADD THIS
 ) {
   return prisma.user.create({
     data: {
@@ -24,6 +25,8 @@ export async function createUser(
       lastName,
       email,
       password,
+      verificationToken,
+      isEmailVerified: false,
     },
   })
 }

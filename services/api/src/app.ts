@@ -6,6 +6,8 @@ import compression from "compression"
 import routes from "./routes/index.js"
 import cacheTestRoutes from "./routes/cache-test.routes.js"
 import superAdminRoutes from "./routes/super-admin.routes.js"
+import organizationRoutes from "./routes/v1/organization.routes.js"
+import verificationRoutes from "./routes/v1/verification.routes.js"
 
 import {
   errorHandler,
@@ -63,6 +65,10 @@ app.use("/", routes)
 
 app.use("/api/v1/cache-test", cacheTestRoutes)
 app.use("/api/v1/admin/super", superAdminRoutes)
+
+app.use("/api/v1/organizations", organizationRoutes)
+
+app.use("/api/v1/auth", verificationRoutes)
 
 app.use(auditLog)
 

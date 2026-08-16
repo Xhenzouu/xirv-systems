@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ============================================================
+// ENUMS
+// ============================================================
+
 enum Role {
   USER
   ADMIN
@@ -19,28 +23,79 @@ enum DocumentStatus {
   ARCHIVED
 }
 
-model User {
-  id        String   @id @default(cuid())
+enum WorkflowStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
 
+enum WorkflowTriggerType {
+  MANUAL
+  SCHEDULED
+  EVENT
+  WEBHOOK
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  BLOCKED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+// NEW: Organization & Team Enums
+enum OrganizationRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum TeamRole {
+  LEADER
+  MEMBER
+}
+
+// ============================================================
+// MODELS
+// ============================================================
+
+model User {
+  id        String @id @default(cuid())
   firstName String
   lastName  String
-
-  email     String   @unique
+  email     String @unique
   password  String
+  role      Role   @default(USER)
 
-  role      Role     @default(USER)
+  isEmailVerified   Boolean   @default(false)
+  emailVerifiedAt   DateTime?
+  verificationToken String?   @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  refreshTokens RefreshToken[]
-  auditLogs     AuditLog[]
-  documents     Document[]
+  // Existing relations
+  refreshTokens    RefreshToken[]
+  auditLogs        AuditLog[]
+  documents        Document[]
+  createdWorkflows Workflow[]     @relation("CreatedWorkflows")
+  assignedTasks    Task[]         @relation("AssignedTasks")
+  approvals        Approval[]     @relation("Approvals")
 
-  // Workflow relations
-  createdWorkflows   Workflow[]   @relation("CreatedWorkflows")
-  assignedTasks      Task[]       @relation("AssignedTasks")
-  approvals          Approval[]   @relation("Approvals")
+  // Organizations & Teams relations
+  organizationMembers OrganizationMember[]
+  teamMembers         TeamMember[]
+  sentInvitations     OrganizationInvitation[] @relation("InvitationsSent")
 
   @@map("users")
 }
@@ -51,23 +106,23 @@ model RefreshToken {
   expiresAt DateTime
   createdAt DateTime @default(now())
 
-  userId    String
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
 }
 
 model AuditLog {
-  id         String   @id @default(cuid())
-  userId     String
-  action     String
-  details    Json?
-  requestId  String?
-  ip         String?
-  userAgent  String?
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  details   Json?
+  requestId String?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([action])
@@ -83,32 +138,32 @@ model Category {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  documents   Document[]
+  documents Document[]
 
   @@map("categories")
 }
 
 model Tag {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  documents   Document[] @relation("DocumentTags")
+  documents Document[] @relation("DocumentTags")
 
   @@map("tags")
 }
 
 model DocumentChunk {
-  id          String   @id @default(cuid())
-  documentId  String
-  content     String
-  embedding   Json?
-  chunkIndex  Int
-  metadata    Json?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  documentId String
+  content    String
+  embedding  Json?
+  chunkIndex Int
+  metadata   Json?
+  createdAt  DateTime @default(now())
 
-  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@index([documentId])
   @@index([createdAt])
@@ -116,7 +171,7 @@ model DocumentChunk {
 }
 
 model Document {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   title       String
   description String?
   fileName    String
@@ -124,19 +179,19 @@ model Document {
   fileSize    Int
   mimeType    String
   content     String?
-  version     Int      @default(1)
+  version     Int            @default(1)
   status      DocumentStatus @default(DRAFT)
 
-  userId      String
-  categoryId  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  userId     String
+  categoryId String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  tags        Tag[]    @relation("DocumentTags")
-  versions    DocumentVersion[]
-  chunks      DocumentChunk[]
+  user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags     Tag[]             @relation("DocumentTags")
+  versions DocumentVersion[]
+  chunks   DocumentChunk[]
 
   @@index([userId])
   @@index([categoryId])
@@ -157,62 +212,33 @@ model DocumentVersion {
   content     String?
   createdAt   DateTime @default(now())
 
-  documentId  String
-  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
+  @@unique([documentId, version])
   @@index([documentId])
   @@index([createdAt])
-  @@unique([documentId, version])
   @@map("document_versions")
 }
 
-enum WorkflowStatus {
-  DRAFT
-  ACTIVE
-  PAUSED
-  ARCHIVED
-}
-
-enum TaskStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-  BLOCKED
-}
-
-enum ApprovalStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  CANCELLED
-}
-
-enum WorkflowTriggerType {
-  MANUAL
-  SCHEDULED
-  EVENT
-  WEBHOOK
-}
-
 model Workflow {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  status      WorkflowStatus @default(DRAFT)
-  triggerType WorkflowTriggerType @default(MANUAL)
+  id            String              @id @default(cuid())
+  name          String
+  description   String?
+  status        WorkflowStatus      @default(DRAFT)
+  triggerType   WorkflowTriggerType @default(MANUAL)
   triggerConfig Json?
-  definition  Json
-  version     Int      @default(1)
-  isTemplate  Boolean  @default(false)
-  createdBy   String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  definition    Json
+  version       Int                 @default(1)
+  isTemplate    Boolean             @default(false)
+  createdBy     String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 
-  instances   WorkflowInstance[]
-  tasks       Task[]
+  instances WorkflowInstance[]
+  tasks     Task[]
 
-  creator     User     @relation("CreatedWorkflows", fields: [createdBy], references: [id], onDelete: Cascade)
+  creator User @relation("CreatedWorkflows", fields: [createdBy], references: [id], onDelete: Cascade)
 
   @@index([status])
   @@index([createdBy])
@@ -221,16 +247,16 @@ model Workflow {
 }
 
 model WorkflowInstance {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   workflowId  String
   status      WorkflowStatus @default(ACTIVE)
-  startedAt   DateTime @default(now())
+  startedAt   DateTime       @default(now())
   completedAt DateTime?
   context     Json?
   createdBy   String
 
-  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  tasks       Task[]
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  tasks    Task[]
 
   @@index([workflowId])
   @@index([status])
@@ -239,24 +265,24 @@ model WorkflowInstance {
 }
 
 model Task {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   workflowId  String?
   instanceId  String
   title       String
   description String?
   status      TaskStatus @default(PENDING)
-  priority    Int      @default(1)
+  priority    Int        @default(1)
   assignedTo  String?
   dueDate     DateTime?
   completedAt DateTime?
   metadata    Json?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
-  workflow    Workflow?          @relation(fields: [workflowId], references: [id], onDelete: SetNull)
-  instance    WorkflowInstance   @relation(fields: [instanceId], references: [id], onDelete: Cascade)
-  assignee    User?              @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
-  approvals   Approval[]
+  workflow  Workflow?        @relation(fields: [workflowId], references: [id], onDelete: SetNull)
+  instance  WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  assignee  User?            @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
+  approvals Approval[]
 
   @@index([instanceId])
   @@index([assignedTo])
@@ -266,19 +292,114 @@ model Task {
 }
 
 model Approval {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   taskId      String
   approverId  String
   status      ApprovalStatus @default(PENDING)
   comment     String?
-  requestedAt DateTime @default(now())
+  requestedAt DateTime       @default(now())
   respondedAt DateTime?
 
-  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  approver    User     @relation("Approvals", fields: [approverId], references: [id], onDelete: Cascade)
+  task     Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  approver User @relation("Approvals", fields: [approverId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
   @@index([approverId])
   @@index([status])
   @@map("approvals")
+}
+
+// ============================================================
+// NEW: ORGANIZATIONS & TEAMS
+// ============================================================
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     OrganizationMember[]
+  teams       Team[]
+  invitations OrganizationInvitation[]
+  settings    OrganizationSettings?
+
+  @@map("organizations")
+}
+
+model OrganizationSettings {
+  id                       String           @id @default(cuid())
+  organizationId           String           @unique
+  organization             Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  allowPublicSignup        Boolean          @default(false)
+  requireEmailVerification Boolean          @default(true)
+  defaultRole              OrganizationRole @default(MEMBER)
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
+
+  @@map("organization_settings")
+}
+
+model OrganizationMember {
+  id             String           @id @default(cuid())
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           OrganizationRole @default(MEMBER)
+  joinedAt       DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+model Team {
+  id             String       @id @default(cuid())
+  name           String
+  description    String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members        TeamMember[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role     TeamRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+model OrganizationInvitation {
+  id             String           @id @default(cuid())
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  inviterId      String
+  inviter        User             @relation("InvitationsSent", fields: [inviterId], references: [id], onDelete: Cascade)
+  token          String           @unique
+  role           OrganizationRole @default(MEMBER)
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  createdAt      DateTime         @default(now())
+
+  @@index([inviterId])
+  @@index([organizationId])
+  @@index([email])
+  @@index([token])
+  @@map("organization_invitations")
 }

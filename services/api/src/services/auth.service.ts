@@ -17,6 +17,8 @@ import {
   findUserByEmail,
 } from "../repositories/user.repository.js"
 
+import { EmailService } from './email.service.js'
+
 export async function registerUser(
   firstName: string,
   lastName: string,
@@ -28,7 +30,7 @@ export async function registerUser(
   if (existing) {
     throw new ApiError(
       409,
-      "An account with this email already exists.",
+      'An account with this email already exists.',
     )
   }
 
@@ -37,12 +39,33 @@ export async function registerUser(
     security.bcryptRounds,
   )
 
-  return createUser(
+  // Generate verification token
+  const verificationToken = EmailService.generateVerificationToken()
+
+  const user = await createUser(
     firstName,
     lastName,
     email,
     hashedPassword,
+    verificationToken,  // Pass the token
   )
+
+  // Send verification email (non-blocking)
+  try {
+    await EmailService.sendVerificationEmail(
+      user.id,
+      user.email,
+      verificationToken,
+    )
+  } catch (error) {
+    // Log error but don't fail registration
+    console.error('Failed to send verification email:', error)
+  }
+
+  return {
+    ...user,
+    requiresEmailVerification: true,
+  }
 }
 
 export async function loginUser(
