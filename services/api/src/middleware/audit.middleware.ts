@@ -12,19 +12,15 @@ export async function auditLog(
   res: Response,
   next: NextFunction,
 ) {
-  // Store the original send function
   const originalSend = res.send.bind(res)
 
-  // Override send to intercept the response
   res.send = function (body: any) {
-    // Only log if the request was successful (2xx)
     if (res.statusCode >= 200 && res.statusCode < 300) {
       const action = getAction(req)
 
       if (action) {
         const userId = getUserId(req, body)
 
-        // Only log if we have a user ID
         if (userId) {
           const details = getDetails(req, body)
 
@@ -36,14 +32,12 @@ export async function auditLog(
             ip: req.ip,
             userAgent: req.headers["user-agent"],
           }).catch((err) => {
-            // Silently fail - don't break the request
             console.error("Failed to create audit log:", err)
           })
         }
       }
     }
 
-    // Call the original send
     return originalSend(body)
   }
 
@@ -54,10 +48,30 @@ function getAction(req: Request): string | null {
   const path = req.path
   const method = req.method
 
-  // Handle dynamic routes
+  // SUPER_ADMIN role change
+  if (path.match(/^\/api\/v1\/admin\/super\/users\/[^/]+\/role$/)) {
+    if (method === "PATCH") return "ROLE_CHANGE"
+  }
+
+  // Admin user actions
   if (path.match(/^\/api\/v1\/admin\/users\/[^/]+$/)) {
     if (method === "GET") return "ADMIN_USER_VIEWED"
-    if (method === "PATCH") return "ROLE_CHANGE"
+  }
+
+  // Organization routes
+  if (path.match(/^\/api\/v1\/organizations\/[^/]+$/)) {
+    if (method === "POST") return "ORGANIZATION_CREATED"
+    if (method === "PATCH") return "ORGANIZATION_UPDATED"
+    if (method === "DELETE") return "ORGANIZATION_DELETED"
+  }
+
+  if (path.match(/^\/api\/v1\/organizations\/[^/]+\/members$/)) {
+    if (method === "POST") return "MEMBER_ADDED"
+    if (method === "GET") return "MEMBERS_VIEWED"
+  }
+
+  if (path.match(/^\/api\/v1\/organizations\/[^/]+\/members\/[^/]+\/role$/)) {
+    if (method === "PATCH") return "MEMBER_ROLE_UPDATED"
   }
 
   // Exact route matches
@@ -77,7 +91,7 @@ function getAction(req: Request): string | null {
 }
 
 function getUserId(req: Request, body: any): string | null {
-  // Check if user is attached to request
+  // Check if user is attached to request (authenticated user)
   if (req.user && typeof req.user === "object" && "id" in req.user) {
     return req.user.id
   }
@@ -86,11 +100,9 @@ function getUserId(req: Request, body: any): string | null {
   if (body && typeof body === "string") {
     try {
       const parsed = JSON.parse(body)
-      // Login response has user in data.user
       if (parsed?.data?.user?.id) {
         return parsed.data.user.id
       }
-      // Register response has user in data (directly)
       if (parsed?.data?.id) {
         return parsed.data.id
       }
@@ -128,8 +140,13 @@ function getDetails(req: Request, body: any): Record<string, any> | undefined {
     return changes
   }
 
-  // For role change, log the new role
-  if (req.path.match(/^\/api\/v1\/admin\/users\/[^/]+$/) && req.method === "PATCH") {
+  // For role change (SUPER_ADMIN), log the new role
+  if (pathMatch(req.path, /^\/api\/v1\/admin\/super\/users\/[^/]+\/role$/) && req.method === "PATCH") {
+    return { newRole: req.body.role }
+  }
+
+  // For admin role change, log the new role
+  if (pathMatch(req.path, /^\/api\/v1\/admin\/users\/[^/]+$/) && req.method === "PATCH") {
     return { newRole: req.body.role }
   }
 
@@ -139,4 +156,8 @@ function getDetails(req: Request, body: any): Record<string, any> | undefined {
   }
 
   return undefined
+}
+
+function pathMatch(path: string, pattern: RegExp): boolean {
+  return pattern.test(path)
 }
