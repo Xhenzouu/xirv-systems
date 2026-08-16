@@ -73,6 +73,10 @@ export async function updateUserRole(req: Request, res: Response, next: NextFunc
     }
 
     const requestingUser = req.user as any
+    if (!requestingUser) {
+      throw new ApiError(401, 'Unauthorized')
+    }
+
     if (user.id === requestingUser.id) {
       throw new ApiError(403, 'Cannot modify your own role')
     }
@@ -86,6 +90,22 @@ export async function updateUserRole(req: Request, res: Response, next: NextFunc
         lastName: true,
         email: true,
         role: true
+      }
+    })
+
+    // 🔥 ADD AUDIT LOG DIRECTLY
+    await prisma.auditLog.create({
+      data: {
+        userId: requestingUser.id,
+        action: 'ROLE_CHANGE',
+        details: {
+          targetUserId: user.id,
+          targetEmail: user.email,
+          oldRole: user.role,
+          newRole: role,
+        },
+        ip: req.ip,
+        userAgent: req.headers['user-agent'] as string,
       }
     })
 
