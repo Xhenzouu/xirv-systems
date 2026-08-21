@@ -1,0 +1,26 @@
+.xirv-verification-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+.xirv-verification-verified {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.xirv-verification-verified svg {
+  color: #059669;
+}
+
+.xirv-verification-unverified {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.xirv-verification-unverified svg {
+  color: #d97706;
+}

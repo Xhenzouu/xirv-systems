@@ -35,6 +35,7 @@ export async function getAllUsers(req: Request, res: Response, next: NextFunctio
         lastName: true,
         email: true,
         role: true,
+        isEmailVerified: true,
         createdAt: true,
         updatedAt: true,
         _count: {

@@ -1,5 +1,5 @@
 import api from './client'
-import type { User, AuditLog, SystemStatus } from '../types/super-admin'
+import type { User, AuditLog, SystemStatus, Organization } from '../types/super-admin'
 
 export const superAdminApi = {
   // System Status
@@ -24,5 +24,26 @@ export const superAdminApi = {
   // Cache
   clearCache: (): Promise<{ cleared: boolean }> => {
     return api.post('/admin/super/cache/clear').then(res => res.data.data)
+  },
+
+  // Organizations
+  getAllOrganizations: (): Promise<Organization[]> => {
+    return api.get('/organizations').then(res => res.data.data)
+  },
+
+  getOrganization: (id: string): Promise<Organization> => {
+    return api.get(`/organizations/${id}`).then(res => res.data.data)
+  },
+
+  createOrganization: (data: { name: string; description?: string }): Promise<Organization> => {
+    return api.post('/organizations', data).then(res => res.data.data)
+  },
+
+  updateOrganization: (id: string, data: { name?: string; description?: string }): Promise<Organization> => {
+    return api.patch(`/organizations/${id}`, data).then(res => res.data.data)
+  },
+
+  deleteOrganization: (id: string): Promise<void> => {
+    return api.delete(`/organizations/${id}`).then(res => res.data.data)
   },
 }

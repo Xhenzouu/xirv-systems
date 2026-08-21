@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Search, RefreshCw, User, Mail, Calendar } from 'lucide-react'
+import { VerificationBadge } from '../ui/VerificationBadge'
 import type { User as UserType } from '../../types/super-admin'
 import './AdminComponents.css'
 
@@ -56,6 +57,7 @@ export function UserTable({ users, updating, onRoleUpdate, onRefresh }: UserTabl
               <th>User</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Verified</th>
               <th>Documents</th>
               <th>Workflows</th>
               <th>Actions</th>
@@ -82,6 +84,9 @@ export function UserTable({ users, updating, onRoleUpdate, onRefresh }: UserTabl
                   <span className={`xirv-role-badge ${getRoleBadgeClass(user.role)}`}>
                     {user.role}
                   </span>
+                </td>
+                <td>
+                  <VerificationBadge isVerified={user.isEmailVerified || false} showLabel={false} />
                 </td>
                 <td>{user._count.documents}</td>
                 <td>{user._count.createdWorkflows}</td>

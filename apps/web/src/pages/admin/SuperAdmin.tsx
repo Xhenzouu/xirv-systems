@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Shield, Users, FileText, Settings, Trash2, Sparkles } from 'lucide-react'
+import { Shield, Users, FileText, Settings, Trash2, Sparkles, Building2 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useSuperAdmin } from '../../hooks/useSuperAdmin'
 import { SystemStatus } from '../../components/admin/SystemStatus'
@@ -7,7 +7,7 @@ import './SuperAdmin.css'
 
 export default function SuperAdmin() {
   const { user } = useAuth()
-  const { loading, systemStatus, totalUsers, totalLogs } = useSuperAdmin()
+  const { loading, systemStatus, totalUsers, totalLogs, totalOrgs } = useSuperAdmin()
 
   if (loading) {
     return (
@@ -68,13 +68,11 @@ export default function SuperAdmin() {
         </div>
         <div className="xirv-stat-card">
           <div className="xirv-stat-icon cache">
-            <Trash2 size={24} />
+            <Building2 size={24} />
           </div>
           <div className="xirv-stat-content">
-            <span className="xirv-stat-value">
-              {systemStatus?.memory ? `${Math.round(systemStatus.memory.rss / 1024 / 1024)} MB` : 'N/A'}
-            </span>
-            <span className="xirv-stat-label">Memory Usage</span>
+            <span className="xirv-stat-value">{totalOrgs}</span>
+            <span className="xirv-stat-label">Organizations</span>
           </div>
         </div>
       </div>

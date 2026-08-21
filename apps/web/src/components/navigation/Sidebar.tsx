@@ -16,11 +16,19 @@ function Sidebar() {
             key={item.path}
             to={item.path}
             className={({ isActive }) => {
-              // For SUPER_ADMIN pages, check if the current path starts with the item path
+              // For exact matches only
+              if (item.path === '/admin') {
+                return location.pathname === '/admin' ? "active" : ""
+              }
               if (item.path === '/super-admin') {
                 return location.pathname === '/super-admin' ? "active" : ""
               }
-              return isActive ? "active" : ""
+              // For sub-pages, check if the path starts with the item path
+              // but only if the item path is not the root admin/super-admin
+              if (isActive) {
+                return "active"
+              }
+              return ""
             }}
           >
             {item.label}

@@ -32,7 +32,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const userData = await authApi.getProfile()
           setUser(userData)
           setAuthenticated(true)
-          // Also store user in localStorage for debugging
           localStorage.setItem('user', JSON.stringify(userData))
         } catch {
           localStorage.removeItem('accessToken')
@@ -50,15 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('accessToken', data.accessToken)
     localStorage.setItem('refreshToken', data.refreshToken)
     
-    // Make sure user has the role
     const userData = data.user
     console.log('🔐 Login response user:', userData)
     console.log('🔐 User role:', userData?.role)
     
     setUser(userData)
     setAuthenticated(true)
-    
-    // Store user in localStorage for persistence
     localStorage.setItem('user', JSON.stringify(userData))
     
     return userData

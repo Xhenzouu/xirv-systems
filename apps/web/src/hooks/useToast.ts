@@ -1,12 +1,20 @@
 import toast from 'react-hot-toast'
 
 export const useToast = () => {
-  const success = (message: string) => {
-    toast.success(message)
+  const success = (message: string, options?: { id?: string }) => {
+    if (options?.id) {
+      toast.success(message, { id: options.id })
+    } else {
+      toast.success(message)
+    }
   }
 
-  const error = (message: string) => {
-    toast.error(message)
+  const error = (message: string, options?: { id?: string }) => {
+    if (options?.id) {
+      toast.error(message, { id: options.id })
+    } else {
+      toast.error(message)
+    }
   }
 
   const info = (message: string) => {

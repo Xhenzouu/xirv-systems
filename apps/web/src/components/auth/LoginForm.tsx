@@ -22,6 +22,9 @@ export default function LoginForm() {
       if (user.role === 'SUPER_ADMIN') {
         console.log('➡️ Redirecting to /super-admin')
         navigate('/super-admin', { replace: true })
+      } else if (user.role === 'ADMIN') {
+        console.log('➡️ Redirecting to /admin')
+        navigate('/admin', { replace: true })
       } else {
         console.log('➡️ Redirecting to /dashboard')
         navigate('/dashboard', { replace: true })

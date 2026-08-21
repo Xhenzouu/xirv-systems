@@ -11,6 +11,11 @@ import {
   updateMemberRole,
   listMembers,
 } from '../../controllers/organization.controller.js'
+import {
+  listTeams,
+  createTeam,
+  deleteTeam,
+} from '../../controllers/team.controller.js'
 
 const router = Router()
 
@@ -29,5 +34,10 @@ router.post('/:id/members', addMember)
 router.get('/:id/members', listMembers)
 router.delete('/:id/members/:memberId', removeMember)
 router.patch('/:id/members/:memberId/role', updateMemberRole)
+
+// Team management
+router.get('/:id/teams', listTeams)
+router.post('/:id/teams', createTeam)
+router.delete('/:id/teams/:teamId', deleteTeam)
 
 export default router

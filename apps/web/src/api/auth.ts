@@ -41,7 +41,6 @@ export const authApi = {
     return response.data.data
   },
 
-  // Email Verification
   verifyEmail: async (token: string): Promise<{ userId: string; email: string }> => {
     const response = await api.get(`/auth/verify?token=${token}`)
     return response.data.data

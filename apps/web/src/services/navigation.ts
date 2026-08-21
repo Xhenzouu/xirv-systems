@@ -1,7 +1,7 @@
 import type { NavigationItem } from "../types/navigation"
 
-// Base navigation items for all authenticated users
-const baseNavigationItems: NavigationItem[] = [
+// Base navigation items for regular users
+const userNavigationItems: NavigationItem[] = [
   {
     label: "Dashboard",
     path: "/dashboard",
@@ -28,7 +28,27 @@ const baseNavigationItems: NavigationItem[] = [
   },
 ]
 
-// SUPER_ADMIN navigation items (shown instead of regular items on /super-admin pages)
+// Admin navigation items (shown INSTEAD of regular pages for ADMIN role)
+const adminNavigationItems: NavigationItem[] = [
+  {
+    label: "Dashboard",
+    path: "/admin",
+  },
+  {
+    label: "Members",
+    path: "/admin/members",
+  },
+  {
+    label: "Teams",
+    path: "/admin/teams",
+  },
+  {
+    label: "Settings",
+    path: "/admin/settings",
+  },
+]
+
+// SUPER_ADMIN navigation items
 const superAdminNavigationItems: NavigationItem[] = [
   {
     label: "Super Admin",
@@ -37,6 +57,10 @@ const superAdminNavigationItems: NavigationItem[] = [
   {
     label: "Users",
     path: "/super-admin/users",
+  },
+  {
+    label: "Organizations",  // ← ADD THIS
+    path: "/super-admin/organizations",
   },
   {
     label: "Audit Logs",
@@ -53,20 +77,26 @@ const superAdminNavigationItems: NavigationItem[] = [
 ]
 
 export function getNavigationItems(role?: string, currentPath?: string): NavigationItem[] {
-  // If user is SUPER_ADMIN and on a SUPER_ADMIN page, show only SUPER_ADMIN navigation
+  // SUPER_ADMIN on SUPER_ADMIN pages → show only super admin items
   if (role === 'SUPER_ADMIN' && currentPath?.startsWith('/super-admin')) {
     return superAdminNavigationItems
   }
 
-  // If user is SUPER_ADMIN but on regular pages, show regular + super admin link
+  // ADMIN → show only admin items
+  if (role === 'ADMIN') {
+    return adminNavigationItems
+  }
+
+  // SUPER_ADMIN on regular pages → show regular + super admin link
   if (role === 'SUPER_ADMIN') {
-    return [...baseNavigationItems, {
+    return [...userNavigationItems, {
       label: "Super Admin",
       path: "/super-admin",
     }]
   }
 
-  return baseNavigationItems
+  // Regular user → show regular pages
+  return userNavigationItems
 }
 
 // Keep the old export for backward compatibility

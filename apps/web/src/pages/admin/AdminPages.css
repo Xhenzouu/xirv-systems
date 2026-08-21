@@ -1,0 +1,781 @@
+/* ===== Admin Dashboard Styles ===== */
+
+.xirv-admin-dashboard {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.xirv-admin-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--xirv-primary), var(--xirv-secondary));
+  color: white;
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-admin-hero h1 {
+  margin: 0 0 var(--space-sm) 0;
+  color: white;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.xirv-admin-hero p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.xirv-admin-hero > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Stats Cards */
+.xirv-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.xirv-stat-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.xirv-stat-icon.organization {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.xirv-stat-icon.members {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.xirv-stat-icon.invites {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.xirv-stat-icon.role {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.xirv-stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.xirv-stat-value {
+  display: block;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.xirv-stat-label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Section Title */
+.xirv-admin-section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+/* Quick Action Cards */
+.xirv-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.xirv-admin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.xirv-admin-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--xirv-accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.xirv-admin-card svg {
+  color: var(--xirv-accent);
+  margin-bottom: var(--space-md);
+}
+
+.xirv-admin-card h3 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.xirv-admin-card p {
+  margin: 0 0 var(--space-md) 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  flex: 1;
+}
+
+.xirv-card-action {
+  color: var(--xirv-accent);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: transform 0.2s ease;
+}
+
+.xirv-admin-card:hover .xirv-card-action {
+  transform: translateX(4px);
+}
+
+/* ===== Admin Pages Common Styles ===== */
+
+.xirv-admin-page {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.xirv-page-header {
+  margin-bottom: var(--space-xl);
+}
+
+.xirv-page-header h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.xirv-page-header p {
+  color: var(--text-secondary);
+  margin: var(--space-xs) 0 0 0;
+  font-size: var(--text-md);
+}
+
+/* Member Controls */
+.xirv-member-controls {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.xirv-member-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+  min-width: 200px;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.xirv-member-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Member Table */
+.xirv-member-table-container {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.xirv-member-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.xirv-member-table thead {
+  background: var(--background-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.xirv-member-table th {
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.xirv-member-table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.xirv-member-table tbody tr:hover {
+  background: var(--background-primary);
+}
+
+.xirv-member-name {
+  font-weight: 600;
+}
+
+.xirv-owner-badge {
+  display: inline-block;
+  margin-left: var(--space-sm);
+  padding: 0 8px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* Role Badges */
+.xirv-role-badge {
+  display: inline-block;
+  padding: 2px var(--space-sm);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.xirv-role-owner {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.xirv-role-admin {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.xirv-role-member {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.xirv-role-viewer {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* Danger Button Small */
+.xirv-btn-danger-small {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: var(--space-sm);
+}
+
+.xirv-btn-danger-small:hover {
+  background: rgba(220, 38, 38, 0.2);
+}
+
+/* Invite Form */
+.xirv-invite-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-xl);
+}
+
+.xirv-invite-form {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+}
+
+.xirv-invite-info {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+}
+
+.xirv-invite-info h3 {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.xirv-invite-info ol {
+  padding-left: var(--space-lg);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 2;
+}
+
+/* Team Grid */
+.xirv-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.xirv-team-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: all 0.2s ease;
+}
+
+.xirv-team-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.xirv-team-header h3 {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.xirv-team-card p {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin: var(--space-xs) 0;
+}
+
+.xirv-team-members {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Team Form */
+.xirv-team-form {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+/* Settings Form */
+.xirv-settings-form {
+  max-width: 600px;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+}
+
+/* Success/Error Messages */
+.xirv-success-message {
+  padding: var(--space-sm) var(--space-md);
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-sm);
+  color: #065f46;
+  margin-bottom: var(--space-lg);
+}
+
+.xirv-error-message {
+  padding: var(--space-sm) var(--space-md);
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  color: #991b1b;
+  margin-bottom: var(--space-lg);
+}
+
+/* Loading */
+.xirv-loading {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .xirv-admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .xirv-admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .xirv-admin-dashboard {
+    padding: var(--space-md);
+  }
+
+  .xirv-admin-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-lg);
+  }
+
+  .xirv-admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-hero-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .xirv-admin-page {
+    padding: var(--space-md);
+  }
+
+  .xirv-invite-container {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-member-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .xirv-member-search {
+    min-width: auto;
+  }
+
+  .xirv-member-table {
+    font-size: 12px;
+  }
+
+  .xirv-member-table th,
+  .xirv-member-table td {
+    padding: var(--space-sm);
+  }
+
+  .xirv-team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-settings-form {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-stat-card {
+    padding: var(--space-md);
+  }
+
+  .xirv-member-table .hide-mobile {
+    display: none;
+  }
+}
+
+/* ===== Email Verification Styles (Clean & Matches User Settings) ===== */
+
+.xirv-verification-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--space-lg);
+  margin-top: var(--space-md);
+}
+
+.xirv-verification-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.xirv-verification-icon {
+  color: var(--text-secondary);
+}
+
+.xirv-verification-title {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.xirv-verification-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+/* Resend Button */
+.xirv-btn-resend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: transparent;
+  color: var(--xirv-accent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.xirv-btn-resend:hover {
+  background: var(--surface);
+  border-color: var(--xirv-accent);
+}
+
+.xirv-btn-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spin animation for refresh icon */
+.xirv-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.xirv-verification-message {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-verification-warning {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-warning);
+}
+
+.xirv-verification-success {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-active);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .xirv-verification-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+}
+
+/* ===== Settings Cards (Like User Settings) ===== */
+
+.xirv-settings-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  transition: border-color 0.2s ease;
+}
+
+.xirv-settings-card:hover {
+  border-color: rgba(0, 229, 255, 0.2);
+}
+
+.xirv-settings-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.xirv-settings-card-icon {
+  color: var(--xirv-accent);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.xirv-settings-card-header h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.xirv-settings-card-header p {
+  margin: 2px 0 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* ===== Email Verification Content ===== */
+
+.xirv-verification-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding: var(--space-sm) 0;
+}
+
+/* Resend Button */
+.xirv-btn-resend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
+  background: transparent;
+  color: var(--xirv-accent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.xirv-btn-resend:hover {
+  background: rgba(0, 229, 255, 0.05);
+  border-color: var(--xirv-accent);
+}
+
+.xirv-btn-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spin animation */
+.xirv-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.xirv-verification-message {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-verification-warning {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-warning);
+}
+
+.xirv-verification-success {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-active);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .xirv-settings-card {
+    padding: var(--space-lg);
+  }
+
+  .xirv-settings-card-header {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .xirv-verification-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .xirv-btn-resend {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-settings-card {
+    padding: var(--space-md);
+  }
+}

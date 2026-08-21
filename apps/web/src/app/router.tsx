@@ -26,6 +26,13 @@ import SuperAdminUsers from '../pages/admin/SuperAdminUsers'
 import SuperAdminAuditLogs from '../pages/admin/SuperAdminAuditLogs'
 import SuperAdminSystem from '../pages/admin/SuperAdminSystem'
 import SuperAdminCache from '../pages/admin/SuperAdminCache'
+import SuperAdminOrganizations from '../pages/admin/SuperAdminOrganizations'
+
+import AdminDashboard from '../pages/admin/AdminDashboard'
+import AdminMembers from '../pages/admin/AdminMembers'
+import AdminInvite from '../pages/admin/AdminInvite'
+import AdminTeams from '../pages/admin/AdminTeams'
+import AdminSettings from '../pages/admin/AdminSettings'
 
 const router = createBrowserRouter([
   {
@@ -111,7 +118,6 @@ const router = createBrowserRouter([
         path: "/settings",
         element: <Settings />,
       },
-      // SUPER_ADMIN Routes
       {
         path: "/super-admin",
         element: <SuperAdmin />,
@@ -131,6 +137,30 @@ const router = createBrowserRouter([
       {
         path: "/super-admin/cache",
         element: <SuperAdminCache />,
+      },
+      {
+        path: "/super-admin/organizations",
+        element: <SuperAdminOrganizations />,
+      },
+      {
+        path: "/admin",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/members",
+        element: <AdminMembers />,
+      },
+      {
+        path: "/admin/invite",
+        element: <AdminInvite />,
+      },
+      {
+        path: "/admin/teams",
+        element: <AdminTeams />,
+      },
+      {
+        path: "/admin/settings",
+        element: <AdminSettings />,
       },
     ],
   },
