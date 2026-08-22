@@ -136,7 +136,6 @@ async acceptInvitation(token: string, userId: string) {
     throw new Error('Invitation has expired');
   }
 
-  // Check if user already belongs to organization
   const existingMember = await prisma.organizationMember.findFirst({
     where: {
       userId,
@@ -144,14 +143,12 @@ async acceptInvitation(token: string, userId: string) {
     }
   });
 
-  // Start transaction
   const result = await prisma.$transaction(async (tx) => {
-    // Update invitation - mark as accepted (delete it or mark as accepted)
     const updatedInvitation = await tx.organizationInvitation.update({
       where: { id: invitation.id },
       data: {
         acceptedAt: new Date(),
-        expiresAt: new Date() // Expire it so it won't show in pending
+        expiresAt: new Date()
       }
     });
 
@@ -159,20 +156,11 @@ async acceptInvitation(token: string, userId: string) {
       return { invitation: updatedInvitation, member: existingMember, alreadyMember: true };
     }
 
-    // Add user to organization
     const member = await tx.organizationMember.create({
       data: {
         userId,
         organizationId: invitation.organizationId,
         role: invitation.role
-      }
-    });
-
-    // Also update the user's organizationId if not set
-    await tx.user.update({
-      where: { id: userId },
-      data: {
-        organizationId: invitation.organizationId
       }
     });
 
