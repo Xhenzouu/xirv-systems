@@ -28,7 +28,6 @@ async createInvitation(
     }
   }
 
-  // Check if there's already a pending invitation (not accepted)
   const existingInvitation = await prisma.organizationInvitation.findFirst({
     where: {
       email,
@@ -37,7 +36,7 @@ async createInvitation(
         gt: new Date()
       },
       acceptedAt: {
-        equals: null  // Only check pending invitations
+        equals: null
       }
     }
   });
@@ -68,6 +67,10 @@ async createInvitation(
       }
     }
   });
+
+  // ADD THESE LOGS:
+  console.log(`🔐 Verification link for ${email}: http://localhost:5173/verify-email?token=${token}`);
+  console.log(`📧 Invitation sent to ${email} with token: ${token}`);
 
   return invitation;
 }
