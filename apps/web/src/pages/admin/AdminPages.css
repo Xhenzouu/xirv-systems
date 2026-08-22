@@ -779,3 +779,171 @@
     padding: var(--space-md);
   }
 }
+
+/* ===== Invite Page Styles ===== */
+
+.xirv-invite-page-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.xirv-page-header-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-md);
+}
+
+.xirv-btn-sm {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--text-sm);
+}
+
+.xirv-btn-sm svg {
+  display: inline;
+  margin-right: 6px;
+}
+
+.xirv-invite-page-form .xirv-settings-card,
+.xirv-invite-page-list .xirv-settings-card {
+  height: 100%;
+}
+
+@media (min-width: 1024px) {
+  .xirv-invite-page-grid {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .xirv-invite-page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Invitation List Styles ===== */
+
+.xirv-invitation-list {
+  margin-top: var(--space-sm);
+}
+
+.xirv-invitation-list-header {
+  margin-bottom: var(--space-md);
+}
+
+.xirv-invitation-list-header h4 {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.xirv-invitation-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .xirv-invitation-list-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Invitation Card Styles ===== */
+
+.xirv-invitation-card {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transition: all 0.2s ease;
+}
+
+.xirv-invitation-card:hover {
+  border-color: var(--xirv-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.xirv-invitation-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.xirv-invitation-card-email {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.xirv-invitation-card-icon {
+  color: var(--text-secondary);
+}
+
+.xirv-invitation-card-body {
+  margin-bottom: var(--space-md);
+}
+
+.xirv-invitation-card-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.xirv-invitation-card-time,
+.xirv-invitation-card-expiry {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.xirv-invitation-card-inviter {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-invitation-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.xirv-btn-secondary.xirv-btn-sm,
+.xirv-btn-danger.xirv-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+}
+
+/* Empty State */
+.xirv-empty-state {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.xirv-empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.xirv-empty-state h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-lg);
+}
+
+.xirv-empty-state p {
+  font-size: var(--text-sm);
+}

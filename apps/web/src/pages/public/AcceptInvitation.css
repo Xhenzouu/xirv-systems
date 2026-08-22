@@ -1,0 +1,295 @@
+/* ===== Accept Invitation Page ===== */
+
+.accept-invitation-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-xl);
+  background: var(--background-primary);
+}
+
+.accept-invitation-card {
+  max-width: 480px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading State */
+.accept-invitation-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.accept-invitation-spinner {
+  animation: spin 1s linear infinite;
+  color: var(--xirv-accent);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+.accept-invitation-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.accept-invitation-logo {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: var(--space-lg);
+}
+
+.accept-invitation-logo-text {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--xirv-primary);
+}
+
+.accept-invitation-logo-sub {
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.accept-invitation-header h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.accept-invitation-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: var(--text-md);
+}
+
+/* Details */
+.accept-invitation-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md);
+  background: var(--background-primary);
+  border-radius: var(--radius-md);
+}
+
+.accept-invitation-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.accept-invitation-detail-item svg {
+  color: var(--text-secondary);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.accept-invitation-detail-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.accept-invitation-detail-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.accept-invitation-detail-value {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.accept-invitation-role-badge {
+  display: inline-block;
+  padding: 2px var(--space-sm);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.accept-invitation-role-badge.admin {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.accept-invitation-role-badge.member {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.accept-invitation-role-badge.viewer {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* Actions */
+.accept-invitation-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.accept-invitation-actions .accept-invitation-btn {
+  flex: 1;
+}
+
+.accept-invitation-login-notice {
+  flex: 1;
+  text-align: center;
+}
+
+.accept-invitation-login-notice p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+/* Buttons */
+.accept-invitation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.accept-invitation-btn-primary {
+  background: var(--xirv-primary);
+  color: #ffffff;
+}
+
+.accept-invitation-btn-primary:hover {
+  background: var(--xirv-primary-dark);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.accept-invitation-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.accept-invitation-btn-secondary {
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.accept-invitation-btn-secondary:hover {
+  background: var(--background-primary);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* Success / Error / Rejected States */
+.accept-invitation-success,
+.accept-invitation-error,
+.accept-invitation-rejected {
+  text-align: center;
+}
+
+.accept-invitation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.accept-invitation-icon.success {
+  color: var(--status-active);
+}
+
+.accept-invitation-icon.error {
+  color: var(--status-error);
+}
+
+.accept-invitation-icon.rejected {
+  color: var(--status-warning);
+}
+
+.accept-invitation-success h2,
+.accept-invitation-error h2,
+.accept-invitation-rejected h2 {
+  color: var(--text-primary);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.accept-invitation-success p,
+.accept-invitation-error p,
+.accept-invitation-rejected p {
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+.accept-invitation-success .accept-invitation-btn,
+.accept-invitation-error .accept-invitation-btn,
+.accept-invitation-rejected .accept-invitation-btn {
+  flex: 0 1 auto;
+}
+
+/* Footer */
+.accept-invitation-footer {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin: 0;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .accept-invitation-card {
+    padding: var(--space-lg);
+  }
+
+  .accept-invitation-actions {
+    flex-direction: column;
+  }
+
+  .accept-invitation-actions .accept-invitation-btn {
+    flex: none;
+    width: 100%;
+  }
+
+  .accept-invitation-detail-item {
+    gap: var(--space-sm);
+  }
+
+  .accept-invitation-header h1 {
+    font-size: var(--text-xl);
+  }
+}

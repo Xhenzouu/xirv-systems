@@ -43,6 +43,10 @@ const adminNavigationItems: NavigationItem[] = [
     path: "/admin/teams",
   },
   {
+    label: "Invite",  // ← ADD THIS
+    path: "/admin/invite",
+  },
+  {
     label: "Settings",
     path: "/admin/settings",
   },
@@ -59,7 +63,7 @@ const superAdminNavigationItems: NavigationItem[] = [
     path: "/super-admin/users",
   },
   {
-    label: "Organizations",  // ← ADD THIS
+    label: "Organizations",
     path: "/super-admin/organizations",
   },
   {

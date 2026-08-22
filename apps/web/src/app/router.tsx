@@ -28,11 +28,15 @@ import SuperAdminSystem from '../pages/admin/SuperAdminSystem'
 import SuperAdminCache from '../pages/admin/SuperAdminCache'
 import SuperAdminOrganizations from '../pages/admin/SuperAdminOrganizations'
 
+// ADMIN Imports
 import AdminDashboard from '../pages/admin/AdminDashboard'
 import AdminMembers from '../pages/admin/AdminMembers'
 import AdminInvite from '../pages/admin/AdminInvite'
 import AdminTeams from '../pages/admin/AdminTeams'
 import AdminSettings from '../pages/admin/AdminSettings'
+
+// PUBLIC Imports
+import AcceptInvitation from '../pages/public/AcceptInvitation'
 
 const router = createBrowserRouter([
   {
@@ -78,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: "/verify-email",
     element: <VerifyEmail />,
+  },
+  {
+    path: "/invite/accept",
+    element: <AcceptInvitation />,
   },
   {
     element: <ProtectedRoute><AppShell /></ProtectedRoute>,

@@ -3,7 +3,7 @@ import { Mail, Send } from 'lucide-react'
 import './AdminComponents.css'
 
 interface InviteFormProps {
-  onInvite: (email: string, role: string) => Promise<boolean>
+  onInvite: (email: string, role: string) => Promise<{ success: boolean; error?: string }> // Changed return type
   isLoading?: boolean
 }
 
@@ -22,10 +22,12 @@ export function InviteForm({ onInvite, isLoading }: InviteFormProps) {
 
     try {
       const result = await onInvite(email, role)
-      if (result) {
+      if (result && result.success) {  // Check result.success
         setSuccess(`Invitation sent to ${email}`)
         setEmail('')
         setRole('MEMBER')
+      } else if (result && result.error) {
+        setError(result.error)
       }
     } catch (err: any) {
       setError(err.message || 'Failed to send invitation')
