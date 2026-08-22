@@ -1,13 +1,54 @@
 import { Link } from 'react-router-dom'
-import { Shield, Users, FileText, Settings, Trash2, Sparkles, Building2 } from 'lucide-react'
+import { Shield, Users, FileText, Settings, Trash2, Sparkles, Building2, Mail, RefreshCw } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useSuperAdmin } from '../../hooks/useSuperAdmin'
 import { SystemStatus } from '../../components/admin/SystemStatus'
+import { VerificationBadge } from '../../components/ui/VerificationBadge'
+import { authApi } from '../../api'
+import { useState, useEffect } from 'react'
 import './SuperAdmin.css'
 
 export default function SuperAdmin() {
   const { user } = useAuth()
   const { loading, systemStatus, totalUsers, totalLogs, totalOrgs } = useSuperAdmin()
+
+  // Email Verification
+  const [verificationStatus, setVerificationStatus] = useState<boolean | null>(null)
+  const [verificationLoading, setVerificationLoading] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [verifyMessage, setVerifyMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    loadVerificationStatus()
+  }, [])
+
+  const loadVerificationStatus = async () => {
+    try {
+      setVerificationLoading(true)
+      const status = await authApi.getVerificationStatus()
+      setVerificationStatus(status.isVerified)
+    } catch (error) {
+      console.error('Failed to load verification status:', error)
+    } finally {
+      setVerificationLoading(false)
+    }
+  }
+
+  const handleResendVerification = async () => {
+    if (!user) return
+
+    setResending(true)
+    setVerifyMessage(null)
+
+    try {
+      await authApi.resendVerification(user.email)
+      setVerifyMessage('✅ Verification email sent! Please check your inbox.')
+    } catch (error: any) {
+      setVerifyMessage(`❌ ${error.response?.data?.message || 'Failed to resend verification email'}`)
+    } finally {
+      setResending(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -75,6 +116,53 @@ export default function SuperAdmin() {
             <span className="xirv-stat-label">Organizations</span>
           </div>
         </div>
+      </div>
+
+      {/* Email Verification Section - Separate Card */}
+      <div className="xirv-super-admin-verification-card">
+        <div className="xirv-verification-header">
+          <Mail size={20} className="xirv-verification-icon" />
+          <div>
+            <h2>Email Verification</h2>
+            <p>Verify your email address to access all features</p>
+          </div>
+        </div>
+
+        {!verificationLoading && verificationStatus !== null && (
+          <div className="xirv-verification-content">
+            <VerificationBadge isVerified={verificationStatus} size="lg" />
+            
+            {!verificationStatus && (
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                disabled={resending}
+                className="xirv-btn-resend"
+              >
+                <RefreshCw size={16} className={resending ? 'xirv-spin' : ''} />
+                {resending ? 'Sending...' : 'Resend Verification'}
+              </button>
+            )}
+          </div>
+        )}
+
+        {verifyMessage && (
+          <div className="xirv-verification-message">
+            {verifyMessage}
+          </div>
+        )}
+
+        {!verificationLoading && verificationStatus === false && (
+          <div className="xirv-verification-warning">
+            ⚠️ Please verify your email to access all features.
+          </div>
+        )}
+
+        {!verificationLoading && verificationStatus === true && (
+          <div className="xirv-verification-success">
+            ✅ Your email is verified. You have full access to all features.
+          </div>
+        )}
       </div>
 
       {/* Quick Action Cards */}

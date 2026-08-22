@@ -612,3 +612,140 @@
 .xirv-modal-footer .xirv-btn-danger {
   padding: var(--space-sm) var(--space-xl);
 }
+
+.xirv-super-admin-verification-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  transition: border-color 0.2s ease;
+}
+
+.xirv-super-admin-verification-card:hover {
+  border-color: rgba(0, 229, 255, 0.2);
+}
+
+.xirv-verification-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.xirv-verification-icon {
+  color: var(--xirv-accent);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.xirv-verification-header h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.xirv-verification-header p {
+  margin: 2px 0 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* Verification Content */
+.xirv-verification-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding: var(--space-sm) 0;
+}
+
+/* Resend Button */
+.xirv-btn-resend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
+  background: transparent;
+  color: var(--xirv-accent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.xirv-btn-resend:hover {
+  background: rgba(0, 229, 255, 0.05);
+  border-color: var(--xirv-accent);
+}
+
+.xirv-btn-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spin Animation */
+.xirv-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.xirv-verification-message {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-verification-warning {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-warning);
+}
+
+.xirv-verification-success {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--status-active);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .xirv-super-admin-verification-card {
+    padding: var(--space-lg);
+  }
+
+  .xirv-verification-header {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .xirv-verification-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .xirv-btn-resend {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-super-admin-verification-card {
+    padding: var(--space-md);
+  }
+}
