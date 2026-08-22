@@ -5,13 +5,12 @@ import bcrypt from "bcrypt"
 import { api } from "./app.js"
 import { prisma } from "./prisma.js"
 
-async function createTestUserDirectly() {
+export async function createTestUserDirectly() {  // Added 'export'
   const email = `${randomUUID()}@example.com`
   const password = "Password123!"
   const firstName = "Test"
   const lastName = "User"
 
-  // First, check if user already exists (to avoid duplicate issues)
   const existingUser = await prisma.user.findUnique({
     where: { email }
   })
@@ -26,7 +25,6 @@ async function createTestUserDirectly() {
     }
   }
 
-  // Create user directly with proper fields
   const hashedPassword = await bcrypt.hash(password, 10)
   
   const user = await prisma.user.create({
@@ -76,7 +74,6 @@ export async function loginAsUser() {
 export async function loginAsAdmin() {
   const { email, password, firstName, lastName, id } = await createTestUserDirectly()
 
-  // Promote to admin
   await prisma.user.update({
     where: { email },
     data: { role: Role.ADMIN },

@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest"
 import { api } from "../helpers/app.js"
 import { clearDatabase, disconnectDatabase } from "../helpers/database.js"
-import { loginAsAdmin, loginAsUser } from "../helpers/auth.js"
+import { loginAsAdmin, loginAsUser, createTestUserDirectly } from "../helpers/auth.js"  // Added createTestUserDirectly
 import { prisma } from "../helpers/prisma.js"
 
 describe("Invitation Smoke Tests", () => {
@@ -12,7 +12,6 @@ describe("Invitation Smoke Tests", () => {
   beforeAll(async () => {
     await clearDatabase()
     
-    // Create an organization first
     const org = await prisma.organization.create({
       data: {
         name: "Test Organization",
@@ -21,12 +20,10 @@ describe("Invitation Smoke Tests", () => {
     })
     organizationId = org.id
 
-    // Create admin user
     const admin = await loginAsAdmin()
     adminToken = admin.accessToken
     adminUser = admin
 
-    // Assign admin to organization via OrganizationMember
     await prisma.organizationMember.create({
       data: {
         userId: admin.id,
@@ -61,7 +58,6 @@ describe("Invitation Smoke Tests", () => {
   })
 
   it("should get pending invitations", async () => {
-    // Create an invitation first
     await api
       .post("/api/v1/invitations")
       .set("Authorization", `Bearer ${adminToken}`)
@@ -164,32 +160,35 @@ describe("Invitation Smoke Tests", () => {
   })
 
   it("should accept an invitation", async () => {
-    // Create user that will accept the invitation
-    const user = await loginAsUser()
+    // Create a fresh user that is NOT already in an organization
+    const { email, password } = await createTestUserDirectly()
+    
+    // Login as the new user
+    const loginResponse = await api
+      .post("/api/v1/auth/login")
+      .send({ email, password })
+    
+    const userToken = loginResponse.body.data.accessToken
 
+    // Send invitation to the user
     const createResponse = await api
       .post("/api/v1/invitations")
       .set("Authorization", `Bearer ${adminToken}`)
       .send({
-        email: user.email,
+        email: email,
         role: "MEMBER"
       })
 
     const token = createResponse.body.data.token
 
+    // Accept the invitation
     const response = await api
       .post(`/api/v1/invitations/${token}/accept`)
-      .set("Authorization", `Bearer ${user.accessToken}`)
+      .set("Authorization", `Bearer ${userToken}`)
 
-    // If the user is already a member, the API returns 400 with a message
-    // But the invitation should still be accepted
-    if (response.status === 400 && response.body.message.includes("already a member")) {
-      expect(response.body.message).toContain("already a member")
-    } else {
-      expect(response.status).toBe(200)
-      expect(response.body.success).toBe(true)
-      expect(response.body.message).toContain("accepted")
-    }
+    expect(response.status).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toContain("accepted")
   })
 
   it("should not accept expired invitation", async () => {
@@ -209,8 +208,6 @@ describe("Invitation Smoke Tests", () => {
       .post(`/api/v1/invitations/${token}/accept`)
       .set("Authorization", `Bearer ${user.accessToken}`)
 
-    // If the user was already added to organization, accept will fail
-    // Otherwise it should succeed
     if (response.status === 200) {
       expect(response.body.success).toBe(true)
       expect(response.body.message).toContain("accepted")
