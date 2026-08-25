@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { invitationService } from '../services/invitation.service.js';
+import { EmailService } from '../services/email.service.js';
 import { prisma } from '../lib/prisma.js';
 import { requireUser } from '../utils/require-user.js';
 import { ok, created } from '../utils/response.js';
@@ -17,7 +18,12 @@ export class InvitationController {
 
       const member = await prisma.organizationMember.findFirst({
         where: { userId: user.id },
-        select: { organizationId: true }
+        select: {
+          organizationId: true,
+          organization: {
+            select: { name: true }
+          }
+        }
       });
 
       if (!member) {
@@ -29,6 +35,15 @@ export class InvitationController {
         member.organizationId,
         user.id,
         role || 'MEMBER'
+      );
+
+      // Send invitation email via SES
+      await EmailService.sendInvitationEmail(
+        email,
+        `${user.firstName} ${user.lastName}`,
+        member.organization.name,
+        invitation.role || 'MEMBER',
+        invitation.token
       );
 
       return created(res, invitation, `Invitation sent to ${email}`);
@@ -201,43 +216,57 @@ export class InvitationController {
     }
   }
 
-async resendInvitation(req: Request, res: Response) {
-  try {
-    const user = requireUser(req);
-    const { id } = req.params;
+  async resendInvitation(req: Request, res: Response) {
+    try {
+      const user = requireUser(req);
+      const { id } = req.params;
 
-    if (!id || typeof id !== 'string') {
-      throw new ApiError(400, 'Invitation ID is required');
-    }
+      if (!id || typeof id !== 'string') {
+        throw new ApiError(400, 'Invitation ID is required');
+      }
 
-    const member = await prisma.organizationMember.findFirst({
-      where: { userId: user.id },
-      select: { organizationId: true }
-    });
+      const member = await prisma.organizationMember.findFirst({
+        where: { userId: user.id },
+        select: {
+          organizationId: true,
+          organization: {
+            select: { name: true }
+          }
+        }
+      });
 
-    if (!member) {
-      throw new ApiError(400, 'User is not associated with an organization');
-    }
+      if (!member) {
+        throw new ApiError(400, 'User is not associated with an organization');
+      }
 
-    const invitation = await invitationService.resendInvitation(id);
+      const invitation = await invitationService.resendInvitation(id);
 
-    console.log(`✅ Invitation resent for: ${invitation.email}`);
-    console.log(`🔗 New verification link: http://localhost:5173/verify-email?token=${invitation.token}`);
+      // Resend invitation email via SES
+      await EmailService.sendInvitationEmail(
+        invitation.email,
+        `${user.firstName} ${user.lastName}`,
+        member.organization.name,
+        invitation.role || 'MEMBER',
+        invitation.token
+      );
 
-    return ok(res, invitation, 'Invitation resent successfully');
-  } catch (error) {
-    if (error instanceof ApiError) {
-      return res.status(error.statusCode).json({
+      console.log(`✅ Invitation resent for: ${invitation.email}`);
+      console.log(`🔗 New verification link: ${process.env.APP_URL || 'http://localhost:5173'}/verify-email?token=${invitation.token}`);
+
+      return ok(res, invitation, 'Invitation resent successfully');
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return res.status(error.statusCode).json({
+          success: false,
+          message: error.message
+        });
+      }
+      return res.status(400).json({
         success: false,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Failed to resend invitation'
       });
     }
-    return res.status(400).json({
-      success: false,
-      message: error instanceof Error ? error.message : 'Failed to resend invitation'
-    });
   }
-}
 }
 
 export const invitationController = new InvitationController();
