@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --env-file=.env --import=tsx src/server.ts",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "tsc --project tsconfig.build.json && cp -r src/templates dist/",
+    "build:win": "tsc --project tsconfig.build.json && xcopy /E /I src\\templates dist\\templates",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
