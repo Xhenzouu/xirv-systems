@@ -1,15 +1,27 @@
 import { useState } from 'react'
 import { useAdmin } from '../../hooks/useAdmin'
 import { TeamCard } from '../../components/admin/TeamCard'
+import { AddTeamMemberModal } from '../../components/admin/AddTeamMemberModal'
 import { Users, Plus } from 'lucide-react'
 import './AdminPages.css'
 
 export default function AdminTeams() {
-  const { teams, loading, createTeam, deleteTeam } = useAdmin()
+  const { 
+    teams, 
+    loading, 
+    createTeam, 
+    deleteTeam,
+    addTeamMember,
+    removeTeamMember,
+    updateTeamMemberRole,
+  } = useAdmin()
+  
   const [showCreate, setShowCreate] = useState(false)
   const [teamName, setTeamName] = useState('')
   const [teamDescription, setTeamDescription] = useState('')
   const [creating, setCreating] = useState(false)
+  const [selectedTeam, setSelectedTeam] = useState<any>(null)
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false)
 
   const handleCreateTeam = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,6 +36,11 @@ export default function AdminTeams() {
       setTeamDescription('')
       setShowCreate(false)
     }
+  }
+
+  const handleAddMemberClick = (team: any) => {
+    setSelectedTeam(team)
+    setShowAddMemberModal(true)
   }
 
   if (loading) {
@@ -89,9 +106,24 @@ export default function AdminTeams() {
               key={team.id}
               team={team}
               onDelete={deleteTeam}
+              onAddMemberClick={handleAddMemberClick}
+              onRemoveMember={removeTeamMember}
+              onUpdateMemberRole={updateTeamMemberRole}
             />
           ))}
         </div>
+      )}
+
+      {selectedTeam && (
+        <AddTeamMemberModal
+          isOpen={showAddMemberModal}
+          onClose={() => {
+            setShowAddMemberModal(false)
+            setSelectedTeam(null)
+          }}
+          team={selectedTeam}
+          onAddMember={addTeamMember}
+        />
       )}
     </div>
   )

@@ -7,14 +7,24 @@ import {
 } from 'react'
 import { authApi } from '../api'
 import type { User } from '../api'
+import api from '../api/client'
+
+interface Organization {
+  id: string
+  name: string
+  slug: string
+  role?: string
+}
 
 interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   user: User | null
+  organization: Organization | null
   login: (email: string, password: string) => Promise<User>
   register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>
   logout: () => Promise<void>
+  refreshOrganization: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -23,6 +33,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState<User | null>(null)
+  const [organization, setOrganization] = useState<Organization | null>(null)
+
+  const fetchOrganization = async () => {
+    try {
+      const response = await api.get('/organizations')
+      if (response.data?.data?.length > 0) {
+        const org = response.data.data[0]
+        setOrganization({
+          id: org.id,
+          name: org.name,
+          slug: org.slug,
+          role: org.role
+        })
+      }
+    } catch (error) {
+      console.error('Failed to fetch organization:', error)
+    }
+  }
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -33,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(userData)
           setAuthenticated(true)
           localStorage.setItem('user', JSON.stringify(userData))
+          await fetchOrganization()
         } catch {
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
@@ -56,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(userData)
     setAuthenticated(true)
     localStorage.setItem('user', JSON.stringify(userData))
+    await fetchOrganization()
     
     return userData
   }
@@ -78,7 +108,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('user')
     setUser(null)
+    setOrganization(null)
     setAuthenticated(false)
+  }
+
+  const refreshOrganization = async () => {
+    await fetchOrganization()
   }
 
   return (
@@ -87,9 +122,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated,
         isLoading,
         user,
+        organization,
         login,
         register,
         logout,
+        refreshOrganization,
       }}
     >
       {children}

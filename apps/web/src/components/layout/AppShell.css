@@ -1,24 +1,15 @@
 .xirv-shell {
-
   min-height: 100vh;
-
-  background:
-    var(--background-primary);
-
+  background: var(--background-primary);
+  transition: background 0.3s ease, color 0.3s ease;
 }
-
 
 .xirv-shell-body {
-
   display: flex;
-
 }
 
-
 .xirv-content {
-
   flex: 1;
-
   padding: var(--space-xl);
-
+  transition: background 0.3s ease, color 0.3s ease;
 }

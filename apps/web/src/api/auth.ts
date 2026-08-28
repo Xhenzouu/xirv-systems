@@ -55,4 +55,20 @@ export const authApi = {
     const response = await api.post('/auth/resend', { email })
     return response.data.data
   },
+
+  // Password Reset Methods
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
+    const response = await api.post('/password/forgot-password', { email })
+    return response.data
+  },
+
+  validateResetToken: async (token: string): Promise<{ valid: boolean }> => {
+    const response = await api.get(`/password/validate/${token}`)
+    return response.data.data
+  },
+
+  resetPassword: async (token: string, password: string): Promise<{ message: string }> => {
+    const response = await api.post(`/password/reset-password/${token}`, { password })
+    return response.data
+  }
 }

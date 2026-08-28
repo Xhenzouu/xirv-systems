@@ -3,6 +3,14 @@
   min-height: calc(100vh - 64px);
   padding: var(--space-lg);
   background: #111827;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* In dark mode, add a subtle white outline */
+[data-theme="dark"] .xirv-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .xirv-sidebar nav {
@@ -32,4 +40,31 @@
   color: var(--xirv-accent);
   border-left: 3px solid var(--xirv-accent);
   opacity: 1;
+}
+
+/* ===== Sidebar Organization Display ===== */
+
+.xirv-sidebar-org {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  margin: 0 var(--space-md) var(--space-md) var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+}
+
+.xirv-sidebar-org-icon {
+  color: var(--xirv-accent);
+  flex-shrink: 0;
+}
+
+.xirv-sidebar-org-name {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -38,6 +38,8 @@ import AdminSettings from '../pages/admin/AdminSettings'
 // PUBLIC Imports
 import AcceptInvitation from '../pages/public/AcceptInvitation'
 
+import ResetPassword from "../pages/ResetPassword"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -82,6 +84,10 @@ const router = createBrowserRouter([
   {
     path: "/verify-email",
     element: <VerifyEmail />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "/invite/accept",

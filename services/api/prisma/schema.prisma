@@ -7,10 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================================
-// ENUMS
-// ============================================================
-
 enum Role {
   USER
   ADMIN
@@ -52,7 +48,6 @@ enum ApprovalStatus {
   CANCELLED
 }
 
-// NEW: Organization & Team Enums
 enum OrganizationRole {
   OWNER
   ADMIN
@@ -64,10 +59,6 @@ enum TeamRole {
   LEADER
   MEMBER
 }
-
-// ============================================================
-// MODELS
-// ============================================================
 
 model User {
   id        String @id @default(cuid())
@@ -309,10 +300,6 @@ model Approval {
   @@map("approvals")
 }
 
-// ============================================================
-// NEW: ORGANIZATIONS & TEAMS
-// ============================================================
-
 model Organization {
   id          String   @id @default(cuid())
   name        String
@@ -402,4 +389,18 @@ model OrganizationInvitation {
   @@index([email])
   @@index([token])
   @@map("organization_invitations")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  usedAt    DateTime?
+
+  @@index([email])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
 }

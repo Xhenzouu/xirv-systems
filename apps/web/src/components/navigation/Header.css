@@ -3,21 +3,90 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-md) var(--space-xl);
-  background: var(--xirv-primary);
+  background: var(--header-bg);
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid var(--header-border, rgba(255, 255, 255, 0.06));
 }
 
-.xirv-header a {
-  color: white;
-  text-decoration: none;
+/* In dark mode, use a slightly lighter border */
+[data-theme="dark"] .xirv-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Header Left - User Info */
+.xirv-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--header-text);
+}
+
+.xirv-header-icon {
+  color: var(--xirv-accent);
+}
+
+.xirv-header-username {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--header-text);
+}
+
+/* Header Actions */
+.xirv-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.xirv-header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--header-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.xirv-header-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.xirv-header-btn:active {
+  transform: scale(0.95);
+}
+
+.xirv-header-btn-logout:hover {
+  background: rgba(220, 38, 38, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .xirv-header {
     padding: var(--space-sm) var(--space-md);
+  }
+
+  .xirv-header-username {
+    font-size: var(--text-xs);
+  }
+
+  .xirv-header-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .xirv-header-btn svg {
+    width: 16px;
+    height: 16px;
   }
 }

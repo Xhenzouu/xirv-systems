@@ -12,37 +12,37 @@ export function useAdmin() {
   const [updating, setUpdating] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-const loadData = useCallback(async () => {
-  try {
-    setLoading(true)
-    setError(null)
-    
-    console.log('🔄 Loading admin data...')
-    
-    const org = await adminApi.getOrganization()
-    console.log('📦 Organization loaded:', org)
-    setOrganization(org)
-    
-    // Get members and teams (teams will return empty array if 404)
-    const [membersData, teamsData] = await Promise.all([
-      adminApi.getMembers(),
-      adminApi.getTeams().catch(() => []), // Fallback to empty array
-    ])
-    
-    console.log('👥 Members loaded:', membersData?.length || 0)
-    console.log('🏷️ Teams loaded:', teamsData?.length || 0)
-    
-    setMembers(membersData || [])
-    setTeams(teamsData || [])
-    setTotalMembers(membersData?.length || 0)
-    setTotalTeams(teamsData?.length || 0)
-  } catch (error: any) {
-    console.error('❌ Failed to load admin data:', error)
-    setError(error.message || 'Failed to load admin data')
-  } finally {
-    setLoading(false)
-  }
-}, [])
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      console.log('🔄 Loading admin data...')
+      
+      const org = await adminApi.getOrganization()
+      console.log('📦 Organization loaded:', org)
+      setOrganization(org)
+      
+      // Get members and teams (teams will return empty array if 404)
+      const [membersData, teamsData] = await Promise.all([
+        adminApi.getMembers(),
+        adminApi.getTeams().catch(() => []), // Fallback to empty array
+      ])
+      
+      console.log('👥 Members loaded:', membersData?.length || 0)
+      console.log('🏷️ Teams loaded:', teamsData?.length || 0)
+      
+      setMembers(membersData || [])
+      setTeams(teamsData || [])
+      setTotalMembers(membersData?.length || 0)
+      setTotalTeams(teamsData?.length || 0)
+    } catch (error: any) {
+      console.error('❌ Failed to load admin data:', error)
+      setError(error.message || 'Failed to load admin data')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   const addMember = useCallback(async (email: string, role: string) => {
     try {
@@ -114,6 +114,58 @@ const loadData = useCallback(async () => {
     }
   }, [loadData])
 
+  const getTeamMembers = useCallback(async (teamId: string) => {
+    try {
+      const members = await adminApi.getTeamMembers(teamId)
+      return members
+    } catch (error) {
+      console.error('Failed to get team members:', error)
+      return []
+    }
+  }, [])
+
+  const addTeamMember = useCallback(async (teamId: string, userId: string, role: string = 'MEMBER') => {
+    try {
+      setUpdating('add-team-member')
+      await adminApi.addTeamMember(teamId, userId, role)
+      await loadData()
+      return true
+    } catch (error) {
+      console.error('Failed to add team member:', error)
+      return false
+    } finally {
+      setUpdating(null)
+    }
+  }, [loadData])
+
+  const removeTeamMember = useCallback(async (teamId: string, memberId: string) => {
+    try {
+      setUpdating('remove-team-member')
+      await adminApi.removeTeamMember(teamId, memberId)
+      await loadData()
+      return true
+    } catch (error) {
+      console.error('Failed to remove team member:', error)
+      return false
+    } finally {
+      setUpdating(null)
+    }
+  }, [loadData])
+
+  const updateTeamMemberRole = useCallback(async (teamId: string, memberId: string, role: string) => {
+    try {
+      setUpdating('update-team-member-role')
+      await adminApi.updateTeamMemberRole(teamId, memberId, role)
+      await loadData()
+      return true
+    } catch (error) {
+      console.error('Failed to update team member role:', error)
+      return false
+    } finally {
+      setUpdating(null)
+    }
+  }, [loadData])
+
   useEffect(() => {
     loadData()
   }, [loadData])
@@ -133,5 +185,10 @@ const loadData = useCallback(async () => {
     removeMember,
     createTeam,
     deleteTeam,
+    getTeamMembers,
+    addTeamMember,
+    removeTeamMember,
+    updateTeamMemberRole,
   }
+
 }

@@ -322,12 +322,17 @@
   }
 }
 
+/* ===== Team Card ===== */
+
 .xirv-team-card {
   background: var(--surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
 .xirv-team-card:hover {
@@ -335,35 +340,278 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.xirv-team-header {
+.xirv-team-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-sm);
+  align-items: flex-start;
+  gap: var(--space-sm);
+  min-width: 0;              
 }
 
-.xirv-team-header h3 {
+.xirv-team-card-title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  cursor: pointer;
+}
+
+.xirv-team-card-title > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.xirv-team-card-title h3 {
   margin: 0;
   font-size: var(--text-md);
   font-weight: 600;
   color: var(--text-primary);
+  word-break: break-word;
 }
 
-.xirv-team-card p {
+.xirv-team-card-title p {
+  margin: 2px 0 0 0;
   color: var(--text-secondary);
   font-size: var(--text-sm);
-  margin: var(--space-xs) 0;
+  word-break: break-word;
 }
 
-.xirv-team-members {
+.xirv-team-card-expand {
+  background: none;
+  border: none;
   color: var(--text-secondary);
-  font-size: var(--text-sm);
-  margin-top: var(--space-md);
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.xirv-team-card-expand:hover {
+  color: var(--text-primary);
+}
+
+.xirv-team-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.xirv-team-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--space-sm);
+  background: var(--background-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.xirv-team-card-body {
   padding-top: var(--space-md);
   border-top: 1px solid var(--border-color);
 }
 
-/* Invite Form Styles */
+.xirv-team-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.xirv-team-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.xirv-team-members-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.xirv-team-members-count {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.xirv-team-members-empty {
+  text-align: center;
+  padding: var(--space-md);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.xirv-team-members-empty button {
+  margin-top: var(--space-sm);
+}
+
+.xirv-team-members-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.xirv-team-member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--background-primary);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.xirv-team-member-item:hover {
+  background: var(--surface);
+}
+
+.xirv-team-member-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.xirv-team-member-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--xirv-accent);
+  border-radius: 50%;
+  color: var(--xirv-primary);
+  flex-shrink: 0;
+}
+
+.xirv-team-member-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.xirv-team-member-name {
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.xirv-team-member-email {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.xirv-team-member-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.xirv-team-member-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.xirv-team-member-role-badge.leader {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.xirv-role-select-sm {
+  padding: 2px var(--space-sm);
+  font-size: 11px;
+  min-width: 80px;
+}
+
+.xirv-btn-icon {
+  padding: 4px;
+  min-width: auto;
+}
+
+.xirv-text-muted {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* ===== Modal ===== */
+
+.xirv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.xirv-modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.xirv-modal-sm {
+  max-width: 400px;
+}
+
+.xirv-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.xirv-modal-header h2,
+.xirv-modal-header h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.xirv-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-xs);
+  transition: color 0.2s ease;
+}
+
+.xirv-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.xirv-modal-body {
+  padding: var(--space-xl);
+}
+
+.xirv-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  border-top: 1px solid var(--border-color);
+}
+
+/* ===== Invite Form ===== */
+
 .xirv-invite-form {
   background: var(--surface);
   border: 1px solid var(--border-color);
@@ -402,7 +650,8 @@
   box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
 }
 
-/* Success/Error Messages */
+/* ===== Success/Error Messages ===== */
+
 .xirv-success-message {
   padding: var(--space-sm) var(--space-md);
   background: #d1fae5;
@@ -421,7 +670,8 @@
   margin-bottom: var(--space-lg);
 }
 
-/* Owner Badge */
+/* ===== Owner Badge ===== */
+
 .xirv-owner-badge {
   display: inline-block;
   margin-left: var(--space-sm);
@@ -433,7 +683,8 @@
   font-weight: 600;
 }
 
-/* Danger Button Small */
+/* ===== Danger Button Small ===== */
+
 .xirv-btn-danger-small {
   background: rgba(220, 38, 38, 0.1);
   color: #dc2626;
@@ -455,7 +706,8 @@
   cursor: not-allowed;
 }
 
-/* Role Badge for Member (Organization Roles) */
+/* ===== Organization Roles ===== */
+
 .xirv-role-owner {
   background: #fef3c7;
   color: #92400e;
@@ -471,7 +723,8 @@
   color: #4b5563;
 }
 
-/* Team Grid */
+/* ===== Team Grid ===== */
+
 .xirv-team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -479,7 +732,8 @@
   margin-top: var(--space-xl);
 }
 
-/* Member Controls */
+/* ===== Member Controls ===== */
+
 .xirv-member-controls {
   display: flex;
   gap: var(--space-md);
@@ -509,35 +763,7 @@
   outline: none;
 }
 
-/* Responsive for new styles */
-@media (max-width: 768px) {
-  .xirv-member-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .xirv-member-search {
-    min-width: auto;
-  }
-
-  .xirv-team-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .xirv-invite-form {
-    padding: var(--space-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .xirv-team-card {
-    padding: var(--space-md);
-  }
-
-  .xirv-invite-form {
-    padding: var(--space-md);
-  }
-}
+/* ===== Organization Grid ===== */
 
 .xirv-org-grid {
   display: grid;
@@ -601,4 +827,74 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+  .xirv-member-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .xirv-member-search {
+    min-width: auto;
+  }
+
+  .xirv-team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .xirv-invite-form {
+    padding: var(--space-lg);
+  }
+
+  .xirv-team-card-header {
+    flex-direction: column;
+  }
+
+  .xirv-team-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .xirv-team-member-item {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .xirv-team-member-actions {
+    flex-wrap: wrap;
+  }
+
+  .xirv-modal {
+    margin: var(--space-md);
+  }
+
+  .xirv-org-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .xirv-team-card {
+    padding: var(--space-md);
+  }
+
+  .xirv-invite-form {
+    padding: var(--space-md);
+  }
+
+  .xirv-team-member-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .xirv-team-member-actions {
+    justify-content: flex-start;
+  }
+
+  .xirv-org-card {
+    padding: var(--space-lg);
+  }
 }

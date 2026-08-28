@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import { documentApi } from '../api'
+import { useAuth } from '../context/AuthContext'
 import SystemOverview from '../components/dashboard/SystemOverview'
 import MetricCard from '../components/dashboard/MetricCard'
 import ActivityPanel from '../components/dashboard/ActivityPanel'
 import DashboardHero from '../components/dashboard/DashboardHero'
 import QuickActions from '../components/dashboard/QuickActions'
+import { Building2 } from 'lucide-react'
 import './Dashboard.css'
 
 function Dashboard() {
   const [documentCount, setDocumentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const { organization } = useAuth()  // Removed 'user'
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,11 +52,14 @@ function Dashboard() {
           status={documentCount > 0 ? 'active' : 'inactive'}
         />
 
-        <MetricCard
-          title="System Health"
-          value="100%"
-          status="active"
-        />
+        {/* Organization Card */}
+        {organization && (
+          <MetricCard
+            title="Organization"
+            value={organization.name}
+            icon={<Building2 size={24} />}
+          />
+        )}
       </div>
 
       <QuickActions />

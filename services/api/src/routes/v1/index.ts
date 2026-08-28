@@ -9,7 +9,8 @@ import tagRoutes from "./tags.routes.js"
 import aiRoutes from "./ai.routes.js"
 import ragRoutes from "./rag.routes.js"
 import workflowRoutes from "./workflow.routes.js"
-import invitationRoutes from './invitation.routes.js';
+import invitationRoutes from './invitation.routes.js'
+import passwordResetRoutes from './password-reset.routes.js'
 
 const router = Router()
 
@@ -30,6 +31,7 @@ router.use("/tags", tagRoutes)
 router.use("/ai", aiRoutes)
 router.use("/rag", ragRoutes)
 router.use("/workflows", workflowRoutes)
-router.use('/invitations', invitationRoutes);
+router.use('/invitations', invitationRoutes)
+router.use('/password', passwordResetRoutes)
 
 export default router

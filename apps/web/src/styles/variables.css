@@ -1,5 +1,4 @@
 :root {
-  
   /* Typography */
   --font-family:
     "Inter",
@@ -8,7 +7,6 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
 
   --text-xs: 12px;
   --text-sm: 14px;
@@ -23,12 +21,10 @@
   --xirv-accent: #00E5FF;
   --xirv-highlight: #F7931E;
 
-
   /* Background */
   --background-primary: #F8FAFC;
   --background-secondary: #111827;
   --surface: #FFFFFF;
-
 
   /* Text */
   --text-primary: #0F172A;
@@ -37,12 +33,10 @@
   /* Borders */
   --border-color: #e5e7eb;
 
-
   /* Status */
   --status-active: #16a34a;
   --status-warning: #d97706;
   --status-error: #dc2626;
-
 
   /* Spacing */
   --space-xs: 4px;
@@ -51,9 +45,24 @@
   --space-lg: 24px;
   --space-xl: 32px;
 
-
   /* Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+
+  /* Header */
+  --header-bg: var(--xirv-primary);
+  --header-text: #ffffff;
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] {
+  --background-primary: #0F172A;
+  --background-secondary: #1E293B;
+  --surface: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --border-color: #334155;
+  --header-bg: #0A0F1A;
+  --header-text: #F1F5F9;
 }

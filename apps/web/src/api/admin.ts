@@ -2,17 +2,15 @@ import api from './client'
 import type { Organization, OrganizationMember, Team } from '../types/organization'
 
 export const adminApi = {
-  // Get all organizations the user belongs to
+  
   getOrganizations: async (): Promise<Organization[]> => {
     const response = await api.get('/organizations')
     return response.data.data
   },
 
-  // Get user's first organization
   getOrganization: async (): Promise<Organization> => {
     const orgs = await adminApi.getOrganizations()
     if (orgs && orgs.length > 0) {
-      // Get full organization details
       const response = await api.get(`/organizations/${orgs[0].id}`)
       return response.data.data
     }
@@ -48,19 +46,18 @@ export const adminApi = {
     await api.delete(`/organizations/${org.id}/members/${memberId}`)
   },
 
-    getTeams: async (): Promise<Team[]> => {
+  getTeams: async (): Promise<Team[]> => {
     try {
-        const org = await adminApi.getOrganization()
-        const response = await api.get(`/organizations/${org.id}/teams`)
-        return response.data.data || []
+      const org = await adminApi.getOrganization()
+      const response = await api.get(`/organizations/${org.id}/teams`)
+      return response.data.data || []
     } catch (error: any) {
-        if (error.response?.status === 404) {
-        // No teams yet, return empty array
+      if (error.response?.status === 404) {
         return []
-        }
-        throw error
+      }
+      throw error
     }
-},
+  },
 
   createTeam: async (data: { name: string; description?: string }): Promise<Team> => {
     const org = await adminApi.getOrganization()
@@ -71,5 +68,29 @@ export const adminApi = {
   deleteTeam: async (teamId: string): Promise<void> => {
     const org = await adminApi.getOrganization()
     await api.delete(`/organizations/${org.id}/teams/${teamId}`)
+  },
+
+  // Team Member Management
+  getTeamMembers: async (teamId: string) => {
+    const org = await adminApi.getOrganization()  // Fixed: use adminApi.getOrganization()
+    const response = await api.get(`/organizations/${org.id}/teams/${teamId}/members`)
+    return response.data.data
+  },
+
+  addTeamMember: async (teamId: string, userId: string, role: string = 'MEMBER') => {
+    const org = await adminApi.getOrganization()  // Fixed: use adminApi.getOrganization()
+    const response = await api.post(`/organizations/${org.id}/teams/${teamId}/members`, { userId, role })
+    return response.data.data
+  },
+
+  removeTeamMember: async (teamId: string, memberId: string) => {
+    const org = await adminApi.getOrganization()  // Fixed: use adminApi.getOrganization()
+    await api.delete(`/organizations/${org.id}/teams/${teamId}/members/${memberId}`)
+  },
+
+  updateTeamMemberRole: async (teamId: string, memberId: string, role: string) => {
+    const org = await adminApi.getOrganization()  // Fixed: use adminApi.getOrganization()
+    const response = await api.patch(`/organizations/${org.id}/teams/${teamId}/members/${memberId}/role`, { role })
+    return response.data.data
   },
 }
