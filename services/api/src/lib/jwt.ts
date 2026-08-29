@@ -1,8 +1,20 @@
-import jwt, {
-  type JwtPayload,
-} from "jsonwebtoken"
-
+import dotenv from "dotenv"
+import path from "path"
+import { fileURLToPath } from "url"
+import jwt, { type JwtPayload } from "jsonwebtoken"
 import type { Role } from "@prisma/client"
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Load .env file based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+const envPath = path.resolve(__dirname, "..", "..", envFile)
+
+dotenv.config({
+  path: envPath,
+})
 
 function getEnv(name: string): string {
   const value = process.env[name]

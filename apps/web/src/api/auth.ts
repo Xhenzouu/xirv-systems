@@ -12,6 +12,15 @@ export interface RegisterData {
   password: string
 }
 
+export interface UpdateProfileData {
+  firstName?: string
+  lastName?: string
+  email?: string
+  avatar?: string | null
+  bio?: string | null
+  phone?: string | null
+}
+
 export interface User {
   id: string
   firstName: string
@@ -19,6 +28,10 @@ export interface User {
   email: string
   role: 'USER' | 'ADMIN' | 'SUPER_ADMIN'
   isEmailVerified?: boolean
+  avatar?: string | null
+  bio?: string | null
+  phone?: string | null
+  createdAt?: string
 }
 
 export const authApi = {
@@ -38,6 +51,11 @@ export const authApi = {
 
   getProfile: async (): Promise<User> => {
     const response = await api.get('/users/profile')
+    return response.data.data
+  },
+
+  updateProfile: async (data: UpdateProfileData): Promise<User> => {
+    const response = await api.patch('/users/profile', data)
     return response.data.data
   },
 

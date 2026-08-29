@@ -68,6 +68,10 @@ model User {
   password  String
   role      Role   @default(USER)
 
+  avatar    String?  
+  bio       String?  
+  phone     String?  
+
   isEmailVerified   Boolean   @default(false)
   emailVerifiedAt   DateTime?
   verificationToken String?   @unique

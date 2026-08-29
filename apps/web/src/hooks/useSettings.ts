@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { useToast } from './useToast'
 import { authApi } from '../api'
 import api from '../api/client'
+import type { UpdateProfileData } from '../api/auth'
 
 export function useSettings() {
   const { user } = useAuth()
@@ -12,6 +13,10 @@ export function useSettings() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [avatar, setAvatar] = useState<string | null>(null)
+  const [bio, setBio] = useState('')
+  const [phone, setPhone] = useState('')
+  const [memberSince, setMemberSince] = useState('')
   const [isProfileLoading, setIsProfileLoading] = useState(false)
 
   // Password
@@ -40,6 +45,13 @@ export function useSettings() {
       setFirstName(user.firstName || '')
       setLastName(user.lastName || '')
       setEmail(user.email || '')
+      setAvatar(user.avatar || null)
+      setBio(user.bio || '')
+      setPhone(user.phone || '')
+      if (user.createdAt) {
+        const date = new Date(user.createdAt)
+        setMemberSince(date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }))
+      }
       loadVerificationStatus()
     }
   }, [user])
@@ -79,18 +91,33 @@ export function useSettings() {
     toast.loading('Updating profile...')
 
     try {
-      await api.patch('/users/profile', { firstName, lastName, email })
-      toast.success('Profile updated successfully!')
-      
-      try {
-        const response = await api.get('/users/profile')
-        const updatedUser = response.data.data
-        setFirstName(updatedUser.firstName)
-        setLastName(updatedUser.lastName)
-        setEmail(updatedUser.email)
-      } catch {
-        // If we can't refresh, just keep the current values
+      // Build data object with all fields
+      const data: UpdateProfileData = {
+        firstName,
+        lastName,
+        email,
       }
+
+      // Always include bio and phone (even if empty string)
+      data.bio = bio || null
+      data.phone = phone || null
+
+      // Only include avatar if it has a value
+      if (avatar) {
+        data.avatar = avatar
+      }
+
+      const updatedUser = await authApi.updateProfile(data)
+
+      toast.success('Profile updated successfully!')
+
+      setFirstName(updatedUser.firstName)
+      setLastName(updatedUser.lastName)
+      setEmail(updatedUser.email)
+      setAvatar(updatedUser.avatar || null)
+      setBio(updatedUser.bio || '')
+      setPhone(updatedUser.phone || '')
+
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to update profile')
     } finally {
@@ -159,9 +186,16 @@ export function useSettings() {
     firstName,
     lastName,
     email,
+    avatar,
+    bio,
+    phone,
+    memberSince,
     setFirstName,
     setLastName,
     setEmail,
+    setAvatar,
+    setBio,
+    setPhone,
     isProfileLoading,
     handleProfileUpdate,
 

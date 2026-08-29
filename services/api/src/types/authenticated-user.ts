@@ -10,6 +10,9 @@ export interface AuthenticatedUser {
   emailVerifiedAt?: Date | null
   verificationToken?: string | null
   organizationId?: string | null
+  avatar?: string | null
+  bio?: string | null
+  phone?: string | null
   createdAt?: Date
   updatedAt?: Date
 }

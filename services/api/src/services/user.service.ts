@@ -28,30 +28,25 @@ export async function getUserById(
 }
 
 export async function updateProfile(
-  id: string,
-  firstName?: string,
-  lastName?: string,
-  email?: string,
+  userId: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  avatar?: string | null,
+  bio?: string | null,
+  phone?: string | null,
 ) {
-  const user = await getUserById(id)
-
-  // Only check email if it's provided
-  if (email && user.email !== email) {
-    const existingUser = await findUserByEmail(email)
-    if (existingUser) {
-      throw new ApiError(409, "Email is already in use.")
-    }
-  }
-
-  // Only include fields that are provided
-  const updateData: any = {}
-  if (firstName !== undefined) updateData.firstName = firstName
-  if (lastName !== undefined) updateData.lastName = lastName
-  if (email !== undefined) updateData.email = email
-
   return prisma.user.update({
-    where: { id },
-    data: updateData,
+    where: { id: userId },
+    data: {
+      firstName,
+      lastName,
+      email,
+      ...(avatar !== undefined && { avatar }),
+      ...(bio !== undefined && { bio }),
+      ...(phone !== undefined && { phone }),
+      updatedAt: new Date(),
+    },
   })
 }
 

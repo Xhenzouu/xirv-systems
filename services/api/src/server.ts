@@ -6,12 +6,16 @@ import { fileURLToPath } from "url"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Load .env file explicitly
+// Load .env file based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+const envPath = path.resolve(__dirname, "..", envFile)
+
 dotenv.config({
-  path: path.resolve(__dirname, "..", ".env"),
+  path: envPath,
 })
 
-console.log("Loaded .env file from:", path.resolve(__dirname, "..", ".env"))
+console.log("Loaded .env file from:", envPath)
+console.log("Environment:", process.env.NODE_ENV || 'development')
 console.log("JWT_ACCESS_SECRET exists:", !!process.env.JWT_ACCESS_SECRET)
 
 import { validateEnv } from "./config/validate-env.js"

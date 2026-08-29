@@ -44,6 +44,12 @@ export async function profile(
       lastName: user.lastName,
       email: user.email,
       role: user.role,
+      avatar: user.avatar || null,
+      bio: user.bio || null,
+      phone: user.phone || null,
+      isEmailVerified: user.isEmailVerified,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     }
 
     await setRedisValue(cacheKey, profileData, 3600)
@@ -84,6 +90,9 @@ export async function update(
     firstName,
     lastName,
     email,
+    avatar,
+    bio,
+    phone,
   } = req.body
 
   const updated = await updateProfile(
@@ -91,6 +100,9 @@ export async function update(
     firstName,
     lastName,
     email,
+    avatar,
+    bio,
+    phone,
   )
 
   await deleteRedisValue(`user:profile:${user.id}`)
@@ -103,6 +115,12 @@ export async function update(
       lastName: updated.lastName,
       email: updated.email,
       role: updated.role,
+      avatar: updated.avatar || null,
+      bio: updated.bio || null,
+      phone: updated.phone || null,
+      isEmailVerified: updated.isEmailVerified,
+      createdAt: updated.createdAt,
+      updatedAt: updated.updatedAt,
     },
     "Profile updated successfully.",
   )

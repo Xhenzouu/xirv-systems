@@ -1,14 +1,21 @@
-import { User, Mail, Save, RefreshCw } from 'lucide-react'
+import { User, Mail, Save, RefreshCw, Phone, FileText } from 'lucide-react'
 import { VerificationBadge } from '../ui/VerificationBadge'
+import { ProfilePreview } from './ProfilePreview'
 import '../../pages/Settings.css'
 
 interface ProfileSectionProps {
   firstName: string
   lastName: string
   email: string
+  bio: string
+  phone: string
+  memberSince: string
+  role?: string
   setFirstName: (value: string) => void
   setLastName: (value: string) => void
   setEmail: (value: string) => void
+  setBio: (value: string) => void
+  setPhone: (value: string) => void
   isProfileLoading: boolean
   handleProfileUpdate: (e: React.FormEvent<HTMLFormElement>) => void
   verificationStatus: boolean | null
@@ -22,9 +29,15 @@ export function ProfileSection({
   firstName,
   lastName,
   email,
+  bio,
+  phone,
+  memberSince,
+  role,
   setFirstName,
   setLastName,
   setEmail,
+  setBio,
+  setPhone,
   isProfileLoading,
   handleProfileUpdate,
   verificationStatus,
@@ -42,32 +55,45 @@ export function ProfileSection({
         </div>
       </div>
 
-      <form onSubmit={handleProfileUpdate} className="settings-form">
-        <div className="settings-form-group">
-          <label>First Name</label>
-          <div className="settings-input-with-icon">
-            <User size={18} />
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="John"
-              required
-            />
-          </div>
-        </div>
+      {/* Profile Preview */}
+      <ProfilePreview
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+        role={role}
+        bio={bio}
+        phone={phone}
+        memberSince={memberSince}
+      />
 
-        <div className="settings-form-group">
-          <label>Last Name</label>
-          <div className="settings-input-with-icon">
-            <User size={18} />
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Doe"
-              required
-            />
+      <form onSubmit={handleProfileUpdate} className="settings-form">
+        <div className="settings-form-row">
+          <div className="settings-form-group settings-form-group-half">
+            <label>First Name</label>
+            <div className="settings-input-with-icon">
+              <User size={18} />
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="John"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="settings-form-group settings-form-group-half">
+            <label>Last Name</label>
+            <div className="settings-input-with-icon">
+              <User size={18} />
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                required
+              />
+            </div>
           </div>
         </div>
 
@@ -83,6 +109,35 @@ export function ProfileSection({
               required
             />
           </div>
+        </div>
+
+        <div className="settings-form-group">
+          <label>Phone Number</label>
+          <div className="settings-input-with-icon">
+            <Phone size={18} />
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+63 912 345 6789"
+            />
+          </div>
+        </div>
+
+        <div className="settings-form-group">
+          <label>Bio</label>
+          <div className="settings-input-with-icon">
+            <FileText size={18} />
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Tell us about yourself..."
+              rows={3}
+              maxLength={500}
+              className="settings-textarea"
+            />
+          </div>
+          <span className="settings-char-count">{bio?.length || 0}/500</span>
         </div>
 
         {!verificationLoading && verificationStatus !== null && (

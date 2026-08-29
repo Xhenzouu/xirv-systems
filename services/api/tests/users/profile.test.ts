@@ -16,7 +16,7 @@ describe(
   "GET /api/v1/users/profile",
   () => {
     it(
-      "should return the authenticated user's profile",
+      "should return the authenticated user's profile with all fields",
       async () => {
         const auth =
           await loginAsUser()
@@ -64,6 +64,23 @@ describe(
         expect(
           response.body.data.role,
         ).toBe("USER")
+
+        // New fields should exist
+        expect(
+          response.body.data,
+        ).toHaveProperty("avatar")
+        
+        expect(
+          response.body.data,
+        ).toHaveProperty("bio")
+        
+        expect(
+          response.body.data,
+        ).toHaveProperty("phone")
+        
+        expect(
+          response.body.data,
+        ).toHaveProperty("createdAt")
       },
     )
 

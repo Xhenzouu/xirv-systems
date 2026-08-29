@@ -11,9 +11,14 @@ function Settings() {
     firstName,
     lastName,
     email,
+    bio,
+    phone,
+    memberSince,
     setFirstName,
     setLastName,
     setEmail,
+    setBio,
+    setPhone,
     isProfileLoading,
     handleProfileUpdate,
 
@@ -65,9 +70,14 @@ function Settings() {
           firstName={firstName}
           lastName={lastName}
           email={email}
+          bio={bio}
+          phone={phone}
+          memberSince={memberSince}
           setFirstName={setFirstName}
           setLastName={setLastName}
           setEmail={setEmail}
+          setBio={setBio}
+          setPhone={setPhone}
           isProfileLoading={isProfileLoading}
           handleProfileUpdate={handleProfileUpdate}
           verificationStatus={verificationStatus}
